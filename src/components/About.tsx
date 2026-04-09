@@ -1,0 +1,272 @@
+"use client";
+
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionTemplate,
+} from "framer-motion";
+
+const ease = [0.16, 1, 0.3, 1] as const;
+
+/* ── Identity fields ── */
+const IDENTITY = [
+  { label: "Name", value: "Jaineel Khatri" },
+  { label: "Role", value: "Cybersecurity student & developer" },
+  { label: "Location", value: "Brisbane, AU" },
+  { label: "Status", value: "Available for work", accent: true },
+];
+
+/* ── Detail fields ── */
+const DETAILS = [
+  { label: "Focus", value: "Cybersecurity + software engineering" },
+  { label: "Currently", value: "Cert IV Cyber Security (TAFE QLD)" },
+  { label: "Interests", value: "Secure systems, UX, performance" },
+  { label: "Goal", value: "Junior dev / security role" },
+];
+
+/* ── Row component ── */
+function InfoRow({
+  label,
+  value,
+  accent,
+  delay,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      className="group relative flex items-baseline justify-between gap-6 py-3.5 px-3 -mx-3 rounded-lg border-b border-white/[0.06] last:border-b-0 hover:border-white/[0.10] hover:bg-white/[0.03] transition-all duration-300"
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5, delay, ease }}
+    >
+      {/* Left accent line on hover */}
+      <span className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full bg-blue-500/0 group-hover:bg-blue-500/25 transition-colors duration-300" />
+      <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/35 shrink-0 group-hover:text-white/50 transition-colors duration-300">
+        {label}
+      </span>
+      <span
+        className={`text-[14px] text-right leading-relaxed transition-colors duration-300 ${
+          accent
+            ? "text-white/80 group-hover:text-white/95"
+            : "text-white/60 group-hover:text-white/80"
+        }`}
+      >
+        {accent && (
+          <span
+            className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400/70 mr-2 relative -top-px animate-[statusPulse_2.5s_ease-in-out_infinite]"
+            style={{
+              boxShadow: "0 0 6px rgba(52,211,153,0.4), 0 0 12px rgba(52,211,153,0.15)",
+            }}
+          />
+        )}
+        {value}
+      </span>
+    </motion.div>
+  );
+}
+
+export default function About() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  /* Scroll-driven entrance */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start 0.35"],
+  });
+
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.7, 1]);
+  const rawY = useTransform(scrollYProgress, [0, 1], [50, 0]);
+  const rawScale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
+  const rawBlur = useTransform(scrollYProgress, [0, 0.5], [6, 0]);
+
+  const opacity = useSpring(rawOpacity, { stiffness: 60, damping: 20 });
+  const scrollY = useSpring(rawY, { stiffness: 60, damping: 20 });
+  const scale = useSpring(rawScale, { stiffness: 60, damping: 20 });
+  const blur = useSpring(rawBlur, { stiffness: 60, damping: 20 });
+  const filterBlur = useMotionTemplate`blur(${blur}px)`;
+
+  return (
+    <section
+      id="about"
+      ref={sectionRef}
+      className="relative min-h-screen bg-bg flex items-center justify-center"
+    >
+      {/* Ambient environment */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: "50vmax",
+            height: "50vmax",
+            background:
+              "radial-gradient(ellipse at center, rgba(37,99,235,0.04) 0%, transparent 60%)",
+            filter: "blur(80px)",
+          }}
+        />
+        {/* Focus glow behind content */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: "55%",
+            height: "45%",
+            background:
+              "radial-gradient(ellipse at center, rgba(37,99,235,0.06) 0%, transparent 55%)",
+            filter: "blur(100px)",
+          }}
+        />
+        {/* Center white highlight */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: "65%",
+            height: "50%",
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.015) 0%, transparent 55%)",
+            filter: "blur(40px)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(5,5,8,0.5) 100%)",
+          }}
+        />
+      </div>
+
+      {/* Content */}
+      <motion.div
+        className="relative z-10 w-full max-w-4xl mx-auto px-6 py-24"
+        style={{
+          opacity,
+          y: scrollY,
+          scale,
+          filter: filterBlur,
+        }}
+      >
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <motion.p
+            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/30 mb-3"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, ease }}
+          >
+            Profile
+          </motion.p>
+          <motion.h2
+            className="text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            style={{ fontFamily: "var(--font-display)" }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.05, ease }}
+          >
+            About
+          </motion.h2>
+          <motion.p
+            className="mt-4 text-[14px] text-white/35 max-w-md mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.1, ease }}
+          >
+            Security-focused developer building modern, reliable systems.
+          </motion.p>
+        </div>
+
+        {/* Content container -- subtle elevation */}
+        <div
+          className="rounded-2xl border border-white/5 backdrop-blur-sm px-6 py-8 md:px-10 md:py-10"
+          style={{
+            background: "rgba(255,255,255,0.02)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
+          }}
+        >
+          {/* Two-column layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
+            {/* Left -- Identity */}
+            <div>
+            <motion.p
+              className="text-[10px] font-mono tracking-[0.25em] uppercase text-white/25 mb-2"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+            >
+              Identity
+            </motion.p>
+            <div className="border-t border-white/[0.06]">
+              {IDENTITY.map((item, i) => (
+                <InfoRow
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                  accent={item.accent}
+                  delay={i * 0.06}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right -- Details */}
+          <div>
+            <motion.p
+              className="text-[10px] font-mono tracking-[0.25em] uppercase text-white/25 mb-2"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+            >
+              Details
+            </motion.p>
+            <div className="border-t border-white/[0.06]">
+              {DETAILS.map((item, i) => (
+                <InfoRow
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                  delay={i * 0.06 + 0.15}
+                />
+              ))}
+            </div>
+          </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <motion.div
+          className="mt-12 mb-5 h-px w-full"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 95%)",
+          }}
+          initial={{ opacity: 0, scaleX: 0.5 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, ease }}
+        />
+
+        {/* Bottom line */}
+        <motion.p
+          className="text-center text-[12px] font-mono tracking-[0.18em] text-white/30"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          Still learning. Always building.
+        </motion.p>
+      </motion.div>
+    </section>
+  );
+}

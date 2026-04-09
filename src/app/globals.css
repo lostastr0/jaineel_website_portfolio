@@ -1,26 +1,242 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: #050508;
+  --color-bg-surface: #0C0C12;
+  --color-bg-surface-hover: #14141E;
+  --color-border: #1A1A28;
+  --color-border-bright: #2A2A3E;
+  --color-text-primary: #EEEEF0;
+  --color-text-secondary: #7A7A90;
+  --color-text-muted: #3A3A50;
+  --color-accent: #2563EB;
+  --color-accent-hover: #3B82F6;
+
+  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-display: var(--font-display), "Syne", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  cursor: none;
+}
+
+*, *::before, *::after {
+  cursor: none !important;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-text-muted); border-radius: 2px; }
+
+::selection {
+  background-color: rgba(37, 99, 235, 0.25);
+  color: var(--color-text-primary);
+}
+
+/* ═══ Environment orbs ═══ */
+.env-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes drift-a {
+  0%, 100% { transform: translateX(-50%) translate(0, 0) scale(1); }
+  25% { transform: translateX(-50%) translate(-30px, 25px) scale(1.04); }
+  50% { transform: translateX(-50%) translate(-10px, 40px) scale(0.97); }
+  75% { transform: translateX(-50%) translate(20px, 10px) scale(1.02); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(25px, -30px) scale(0.96); }
+  50% { transform: translate(10px, -10px) scale(1.05); }
+  75% { transform: translate(-20px, 20px) scale(0.98); }
+}
+
+.env-drift-a { animation: drift-a 18s ease-in-out infinite; }
+.env-drift-b { animation: drift-b 22s ease-in-out infinite; }
+
+/* ═══ Hero name typography ═══ */
+/* Styles applied directly via inline styles on the elements */
+
+/* ═══ Hover glint — sweeps across first name on hover ═══ */
+.hero-glint-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-glint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-glint::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.10) 45%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.10) 55%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
+  );
+  transition: none;
+}
+
+.hero-glint-wrap:hover .hero-glint::after {
+  animation: glint-pass 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes glint-pass {
+  from { left: -100%; }
+  to { left: 200%; }
+}
+
+/* ═══ Status dot — soft glow pulse ═══ */
+@keyframes status-glow {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(52, 211, 153, 0.3); }
+  50% { box-shadow: 0 0 8px 3px rgba(52, 211, 153, 0.15); }
+}
+
+.hero-status-dot {
+  position: relative;
+  display: inline-flex;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #34d399;
+  animation: status-glow 3s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ═══ Spotify equalizer bars ═══ */
+@keyframes spotify-bounce {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+
+.spotify-bar {
+  background-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+  animation: spotify-bounce 1.2s ease-in-out infinite;
+}
+
+
+/* ═══ Hero entrance animations ═══ */
+/* Opacity-only — no transform, so JS tilt has sole control */
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Presence: scale 0.98 → 1.02 → 1 */
+@keyframes hero-presence {
+  0% { opacity: 0; transform: scale(0.98); }
+  60% { opacity: 1; transform: scale(1.015); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.hero-presence {
+  opacity: 0;
+  animation: hero-presence 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+
+.hero-slide-in {
+  opacity: 0;
+  animation: hero-fade-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-fade-in {
+  opacity: 0;
+  animation: hero-fade-in 0.8s ease-out forwards;
+}
+
+/* ═══ Navbar ═══ */
+@keyframes nav-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.nav-enter {
+  opacity: 0;
+  animation: nav-fade 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+/* ═══ Resume toast ═══ */
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.resume-toast-enter {
+  animation: toast-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes toast-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+    filter: blur(2px);
+  }
+}
+
+.resume-toast-exit {
+  animation: toast-out 0.28s cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
+}
+
+/* ═══ Utility ═══ */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.section-padding {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
 }
