@@ -86,7 +86,7 @@ export default function Footer() {
           </p>
 
           {/* Right — links */}
-          <div className="flex items-center gap-5 max-md:order-2">
+          <div className="flex items-center gap-3 md:gap-5 max-md:order-2">
             {LINKS.map((link, i) => (
               <span key={link.label} className="flex items-center gap-5">
                 {i > 0 && (

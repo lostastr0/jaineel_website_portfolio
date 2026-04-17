@@ -74,16 +74,17 @@ export default function Navbar() {
           WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
         }}
       >
+        {/* Left — logo, positioned outside container */}
+        <a
+          href="#home"
+          onClick={(e) => { e.preventDefault(); handleNavClick("#home"); }}
+          className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-white/80 hover:text-white tracking-tight transition-colors duration-200"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          JK<span className="text-accent">.</span>
+        </a>
+
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          {/* Left — logo */}
-          <a
-            href="#home"
-            onClick={(e) => { e.preventDefault(); handleNavClick("#home"); }}
-            className="text-[14px] font-semibold text-white/80 hover:text-white tracking-tight transition-colors duration-200"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            JK<span className="text-accent">.</span>
-          </a>
 
           {/* Center — nav pill */}
           <nav
@@ -143,8 +144,6 @@ export default function Navbar() {
             {mobileMenuOpen ? "Close" : "Menu"}
           </button>
 
-          {/* Right spacer on desktop */}
-          <div className="hidden md:block w-8.5" />
         </div>
 
         {/* Info rail — sits directly under nav bar */}
@@ -228,7 +227,7 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl flex flex-col items-center justify-center hero-fade-in">
+        <div className="md:hidden fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-y-auto hero-fade-in">
           <nav className="flex flex-col items-center gap-2">
             {NAV_ITEMS.map((item) => (
               <a

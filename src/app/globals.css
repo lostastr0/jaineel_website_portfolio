@@ -28,6 +28,12 @@ html {
   cursor: none !important;
 }
 
+/* Restore default cursor on touch / mobile devices */
+@media (pointer: coarse) {
+  html { cursor: auto; }
+  *, *::before, *::after { cursor: auto !important; }
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);

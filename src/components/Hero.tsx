@@ -61,10 +61,15 @@ export default function Hero() {
     );
   }, []);
 
-  /* ── Custom cursor (soft glow) ── */
+  /* ── Custom cursor (soft glow) — disabled on touch devices ── */
   useEffect(() => {
     const el = cursorRef.current;
     if (!el) return;
+
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      el.style.display = "none";
+      return;
+    }
 
     let mouseX = 0, mouseY = 0;
     let curX = 0, curY = 0;
@@ -241,7 +246,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" ref={sectionRef} className="relative h-screen overflow-hidden bg-bg cursor-none">
+    <section id="home" ref={sectionRef} className="relative h-screen overflow-hidden bg-bg cursor-none touch-auto">
 
       {/* ═══ CUSTOM CURSOR ═══ */}
       <div
@@ -266,7 +271,7 @@ export default function Hero() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap select-none"
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(14rem, 30vw, 34rem)",
+            fontSize: "clamp(4rem, 25vw, 34rem)",
             fontWeight: 800,
             letterSpacing: "-0.06em",
             lineHeight: 0.85,
@@ -327,7 +332,7 @@ export default function Hero() {
           <div className="hero-slide-in" style={{ animationDelay: "calc(0.1s + var(--preloader-offset))" }}>
             <h1
               ref={firstNameRef}
-              className="text-[clamp(4rem,10vw,10rem)] font-extrabold leading-[0.85] tracking-[-0.06em] text-white uppercase"
+              className="text-[clamp(2.5rem,9vw,10rem)] font-extrabold leading-[0.85] tracking-[-0.06em] text-white uppercase"
               style={{
                 fontFamily: "var(--font-display)",
                 willChange: "transform, text-shadow, filter",
@@ -345,7 +350,7 @@ export default function Hero() {
           <div className="hero-slide-in" style={{ animationDelay: "calc(0.22s + var(--preloader-offset))" }}>
             <h1
               ref={lastNameRef}
-              className="text-[clamp(4rem,10vw,10rem)] font-bold leading-[0.85] tracking-[-0.06em] uppercase"
+              className="text-[clamp(2.5rem,9vw,10rem)] font-bold leading-[0.85] tracking-[-0.06em] uppercase"
               style={{
                 fontFamily: "var(--font-display)",
                 willChange: "transform, text-shadow, filter",
@@ -450,7 +455,7 @@ export default function Hero() {
         )}
 
         {/* Bottom bar — pinned to bottom */}
-        <div className="absolute bottom-0 left-0 right-0 px-10 md:px-20 lg:px-28 pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
+        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-20 lg:px-28 pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
           <NowPlaying />
           <p className="text-[10px] font-mono text-white/12 tracking-wider">
             {buildingText}<span className="text-white/20">.</span>

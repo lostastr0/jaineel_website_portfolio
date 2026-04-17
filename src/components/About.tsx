@@ -181,7 +181,7 @@ export default function About() {
             Profile
           </motion.p>
           <motion.h2
-            className="text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -210,7 +210,7 @@ export default function About() {
           }}
         >
           {/* Two-column layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-14">
             {/* Left -- Identity */}
             <div>
             <motion.p

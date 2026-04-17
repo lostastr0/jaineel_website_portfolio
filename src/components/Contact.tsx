@@ -78,7 +78,7 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
     >
       <motion.div
         ref={containerRef}
-        className="relative rounded-2xl border border-white/7 backdrop-blur-sm px-10 py-12 text-center overflow-hidden"
+        className="relative rounded-2xl border border-white/7 backdrop-blur-sm px-5 py-8 md:px-10 md:py-12 text-center overflow-hidden"
         style={{
           background: "rgba(255,255,255,0.022)",
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 2px 24px rgba(0,0,0,0.15)",
@@ -206,7 +206,7 @@ export default function Contact() {
 
         {/* Headline */}
         <motion.h2
-          className="text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+          className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
           style={{ fontFamily: "var(--font-display)" }}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

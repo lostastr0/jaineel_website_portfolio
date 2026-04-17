@@ -197,7 +197,7 @@ function ProjectBlock({
           {/* Visual preview area — sits slightly behind */}
           <div
             ref={imageRef}
-            className="relative md:w-[45%] aspect-[16/10] md:aspect-auto min-h-[260px] overflow-hidden"
+            className="relative md:w-[45%] aspect-[16/10] md:aspect-auto min-h-45 md:min-h-65 overflow-hidden"
             style={{
               transition: "transform 0.4s ease",
               transformStyle: "preserve-3d",
@@ -233,7 +233,7 @@ function ProjectBlock({
           {/* Text content — sits slightly forward */}
           <div
             ref={textRef}
-            className="flex-1 flex flex-col justify-center px-8 py-10 md:px-12 md:py-14"
+            className="flex-1 flex flex-col justify-center px-5 py-8 md:px-12 md:py-14"
             style={{
               transition: "transform 0.4s ease",
               transformStyle: "preserve-3d",
@@ -433,7 +433,7 @@ export default function Projects() {
             Selected
           </motion.p>
           <motion.h2
-            className="text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
