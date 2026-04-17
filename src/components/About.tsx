@@ -77,15 +77,32 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   /* Scroll-driven entrance */
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress: enterProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "start 0.35"],
   });
 
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.7, 1]);
-  const rawY = useTransform(scrollYProgress, [0, 1], [50, 0]);
-  const rawScale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
-  const rawBlur = useTransform(scrollYProgress, [0, 0.5], [6, 0]);
+  /* Scroll-driven exit */
+  const { scrollYProgress: exitProgress } = useScroll({
+    target: sectionRef,
+    offset: ["end 0.85", "end 0.35"],
+  });
+
+  const enterOpacity = useTransform(enterProgress, [0, 0.5, 1], [0, 0.7, 1]);
+  const exitOpacity = useTransform(exitProgress, [0, 1], [1, 0]);
+  const rawOpacity = useTransform(() => enterOpacity.get() * exitOpacity.get());
+
+  const enterY = useTransform(enterProgress, [0, 1], [40, 0]);
+  const exitY = useTransform(exitProgress, [0, 1], [0, -25]);
+  const rawY = useTransform(() => enterY.get() + exitY.get());
+
+  const enterScale = useTransform(enterProgress, [0, 1], [0.98, 1]);
+  const exitScale = useTransform(exitProgress, [0, 1], [1, 0.985]);
+  const rawScale = useTransform(() => enterScale.get() * exitScale.get());
+
+  const enterBlur = useTransform(enterProgress, [0, 0.5], [5, 0]);
+  const exitBlur = useTransform(exitProgress, [0, 1], [0, 4]);
+  const rawBlur = useTransform(() => enterBlur.get() + exitBlur.get());
 
   const opacity = useSpring(rawOpacity, { stiffness: 60, damping: 20 });
   const scrollY = useSpring(rawY, { stiffness: 60, damping: 20 });
@@ -97,7 +114,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative min-h-screen bg-bg flex items-center justify-center"
+      className="relative min-h-screen bg-bg flex items-center justify-center pt-16"
     >
       {/* Ambient environment */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

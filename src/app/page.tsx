@@ -5,15 +5,17 @@ import Projects from "@/components/Projects";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Preloader from "@/components/Preloader";
 
 export default function Home() {
   return (
     <>
+      <Preloader />
       <Navbar />
       <main>
         <Hero />
-        <Skills />
         <Projects />
+        <Skills />
         <About />
         <Contact />
       </main>

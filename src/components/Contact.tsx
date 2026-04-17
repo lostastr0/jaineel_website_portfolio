@@ -78,10 +78,10 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
     >
       <motion.div
         ref={containerRef}
-        className="relative rounded-2xl border border-white/5 backdrop-blur-sm px-10 py-12 text-center overflow-hidden"
+        className="relative rounded-2xl border border-white/7 backdrop-blur-sm px-10 py-12 text-center overflow-hidden"
         style={{
-          background: "rgba(255,255,255,0.018)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.025)",
+          background: "rgba(255,255,255,0.022)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 2px 24px rgba(0,0,0,0.15)",
         }}
         animate={{
           y: [0, -6, 0],
@@ -109,15 +109,33 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
 export default function Contact() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
+  /* Scroll-driven entrance */
+  const { scrollYProgress: enterProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "start 0.4"],
   });
 
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.7, 1]);
-  const rawY = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const rawScale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
-  const rawBlur = useTransform(scrollYProgress, [0, 0.5], [5, 0]);
+  /* Scroll-driven exit — gentler since it's the last section */
+  const { scrollYProgress: exitProgress } = useScroll({
+    target: sectionRef,
+    offset: ["end 0.9", "end 0.5"],
+  });
+
+  const enterOpacity = useTransform(enterProgress, [0, 0.5, 1], [0, 0.7, 1]);
+  const exitOpacity = useTransform(exitProgress, [0, 1], [1, 0.3]);
+  const rawOpacity = useTransform(() => enterOpacity.get() * exitOpacity.get());
+
+  const enterY = useTransform(enterProgress, [0, 1], [40, 0]);
+  const exitY = useTransform(exitProgress, [0, 1], [0, -15]);
+  const rawY = useTransform(() => enterY.get() + exitY.get());
+
+  const enterScale = useTransform(enterProgress, [0, 1], [0.98, 1]);
+  const exitScale = useTransform(exitProgress, [0, 1], [1, 0.99]);
+  const rawScale = useTransform(() => enterScale.get() * exitScale.get());
+
+  const enterBlur = useTransform(enterProgress, [0, 0.5], [5, 0]);
+  const exitBlur = useTransform(exitProgress, [0, 1], [0, 2]);
+  const rawBlur = useTransform(() => enterBlur.get() + exitBlur.get());
 
   const opacity = useSpring(rawOpacity, { stiffness: 60, damping: 20 });
   const scrollY = useSpring(rawY, { stiffness: 60, damping: 20 });
@@ -235,7 +253,7 @@ export default function Contact() {
         </motion.div>
 
         {/* CTA container — visual anchor */}
-        <div className="mt-14">
+        <div className="mt-10">
           <CTAContainer>
             {/* Primary CTA */}
             <a

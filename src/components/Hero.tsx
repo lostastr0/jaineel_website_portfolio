@@ -11,6 +11,7 @@ export default function Hero() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const scrollProgress = useRef(0);
   const [toastState, setToastState] = useState<"hidden" | "entering" | "dismissing">("hidden");
+  const [buildingText] = useState(() => Math.random() < 0.08 ? "The cycle continues" : "Still building");
   const resumeBtnRef = useRef<HTMLButtonElement>(null);
   const toastRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +52,14 @@ export default function Hero() {
       document.removeEventListener("mousedown", onClick);
     };
   }, [toastState, dismissToast]);
+
+  /* ── Console easter egg ── */
+  useEffect(() => {
+    console.log(
+      "%c> System initialized.\n> Build 2026.04 · stable\n> The world is quite beautiful, isn't it?",
+      "color: #6b7280; font-family: monospace; font-size: 11px; line-height: 1.6;"
+    );
+  }, []);
 
   /* ── Custom cursor (soft glow) ── */
   useEffect(() => {
@@ -189,8 +198,8 @@ export default function Hero() {
 
       // Magnetic block + scroll: compose both transforms
       const sp = scrollProgress.current;
-      const scrollScale = 1 - sp * 0.06;
-      const scrollShift = -sp * 40;
+      const scrollScale = 1 - sp * 0.02;
+      const scrollShift = -sp * 30;
       content.style.transform = `translate(${blockCurX * 8}px, ${blockCurY * 5 + scrollShift}px) scale(${scrollScale})`;
 
       raf = requestAnimationFrame(tick);
@@ -219,6 +228,7 @@ export default function Hero() {
       scrollProgress.current = Math.min(y / (vh * 0.5), 1);
 
       content.style.opacity = `${1 - scrollProgress.current * 0.8}`;
+      content.style.filter = `blur(${scrollProgress.current * 4}px)`;
 
       const ghost = section.querySelector<HTMLElement>("[data-parallax='ghost']");
       const orbs = section.querySelector<HTMLElement>("[data-parallax='orbs']");
@@ -287,7 +297,7 @@ export default function Hero() {
         </div>
 
         {/* Single horizontal structural line */}
-        <div className="absolute left-0 right-0 top-[43%] hero-fade-in" style={{ animationDelay: "0.8s" }}>
+        <div className="absolute left-0 right-0 top-[43%] hero-fade-in" style={{ animationDelay: "calc(0.8s + var(--preloader-offset))" }}>
           <div className="h-px w-full" style={{
             background: "linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 75%, transparent 95%)",
           }} />
@@ -302,36 +312,19 @@ export default function Hero() {
       {/* ═══ CONTENT ═══ */}
       <div className="relative z-10 h-full grid place-items-center">
 
-        {/* Status strip — below navbar with breathing room */}
-        <div className="absolute top-20 left-0 right-0 flex items-center justify-center gap-6 md:gap-9 hero-fade-in" style={{ animationDelay: "0.7s" }}>
-          <div className="flex items-center gap-2">
-            <span className="hero-status-dot" />
-            <span className="text-[9px] font-mono tracking-[0.18em] uppercase text-white/45">
-              Available for work
-            </span>
-          </div>
-          <span className="h-2.5 w-px bg-white/18" />
-          <span className="text-[9px] font-mono tracking-[0.18em] uppercase text-white/38">
-            Brisbane, AU
-          </span>
-          <span className="hidden sm:block h-2.5 w-px bg-white/18" />
-          <span className="hidden sm:block text-[9px] font-mono tracking-[0.18em] uppercase text-white/38">
-            2026
-          </span>
-        </div>
 
         {/* Hero block — grid-centered, then nudged up slightly */}
         <div
           ref={contentRef}
           className="text-center hero-presence"
           style={{
-            marginTop: "-6vh",
+            marginTop: "-4vh",
             willChange: "opacity, transform",
           }}
         >
 
           {/* JAINEEL */}
-          <div className="hero-slide-in" style={{ animationDelay: "0.1s" }}>
+          <div className="hero-slide-in" style={{ animationDelay: "calc(0.1s + var(--preloader-offset))" }}>
             <h1
               ref={firstNameRef}
               className="text-[clamp(4rem,10vw,10rem)] font-extrabold leading-[0.85] tracking-[-0.06em] text-white uppercase"
@@ -349,7 +342,7 @@ export default function Hero() {
           </div>
 
           {/* KHATRI */}
-          <div className="hero-slide-in" style={{ animationDelay: "0.22s" }}>
+          <div className="hero-slide-in" style={{ animationDelay: "calc(0.22s + var(--preloader-offset))" }}>
             <h1
               ref={lastNameRef}
               className="text-[clamp(4rem,10vw,10rem)] font-bold leading-[0.85] tracking-[-0.06em] uppercase"
@@ -370,7 +363,7 @@ export default function Hero() {
           {/* Descriptor */}
           <p
             className="mt-7 text-[15px] md:text-[17px] text-white/55 leading-relaxed hero-fade-in"
-            style={{ animationDelay: "0.45s", letterSpacing: "0.01em" }}
+            style={{ animationDelay: "calc(0.45s + var(--preloader-offset))", letterSpacing: "0.01em" }}
           >
             Cybersecurity student & builder based in Brisbane.
             <br />
@@ -378,7 +371,7 @@ export default function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="mt-7 flex items-center justify-center gap-4 hero-fade-in" style={{ animationDelay: "0.6s" }}>
+          <div className="mt-7 flex items-center justify-center gap-4 hero-fade-in" style={{ animationDelay: "calc(0.6s + var(--preloader-offset))" }}>
             <a
               href="#projects"
               onClick={(e) => { e.preventDefault(); scrollTo("#projects"); }}
@@ -457,10 +450,10 @@ export default function Hero() {
         )}
 
         {/* Bottom bar — pinned to bottom */}
-        <div className="absolute bottom-0 left-0 right-0 px-10 md:px-20 lg:px-28 pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "1s" }}>
+        <div className="absolute bottom-0 left-0 right-0 px-10 md:px-20 lg:px-28 pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
           <NowPlaying />
           <p className="text-[10px] font-mono text-white/12 tracking-wider">
-            Still building<span className="text-white/20">.</span>
+            {buildingText}<span className="text-white/20">.</span>
           </p>
         </div>
       </div>

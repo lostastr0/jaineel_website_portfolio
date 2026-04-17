@@ -64,6 +64,7 @@ function ProjectBlock({
   index: number;
 }) {
   const isEven = index % 2 === 0;
+  const isFeatured = index === 0;
   const cardRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -135,21 +136,23 @@ function ProjectBlock({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.96 }}
+      initial={{ opacity: 0, y: 40, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, ease }}
+      transition={{ duration: 0.6, ease }}
       style={{ transformStyle: "preserve-3d" }}
     >
       <div
         ref={cardRef}
         className="group relative rounded-2xl border overflow-hidden"
         style={{
-          borderColor: "rgba(255,255,255,0.07)",
-          background:
-            "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%)",
-          boxShadow:
-            "0 4px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+          borderColor: isFeatured ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.07)",
+          background: isFeatured
+            ? "linear-gradient(135deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.02) 100%)"
+            : "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%)",
+          boxShadow: isFeatured
+            ? "0 4px 50px rgba(0,0,0,0.3), 0 0 40px rgba(37,99,235,0.04), inset 0 1px 0 rgba(255,255,255,0.06)"
+            : "0 4px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
           transition: "box-shadow 0.5s ease, border-color 0.5s ease",
           transformStyle: "preserve-3d",
           willChange: "transform",
@@ -347,16 +350,33 @@ function ProjectBlock({
 export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  /* Scroll-driven entrance transition */
-  const { scrollYProgress } = useScroll({
+  /* Scroll-driven entrance */
+  const { scrollYProgress: enterProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "start 0.35"],
+    offset: ["start end", "start 0.45"],
   });
 
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.7, 1]);
-  const rawY = useTransform(scrollYProgress, [0, 1], [50, 0]);
-  const rawScale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
-  const rawBlur = useTransform(scrollYProgress, [0, 0.5], [6, 0]);
+  /* Scroll-driven exit */
+  const { scrollYProgress: exitProgress } = useScroll({
+    target: sectionRef,
+    offset: ["end 0.85", "end 0.35"],
+  });
+
+  const enterOpacity = useTransform(enterProgress, [0, 0.5, 1], [0, 0.7, 1]);
+  const exitOpacity = useTransform(exitProgress, [0, 1], [1, 0]);
+  const rawOpacity = useTransform(() => enterOpacity.get() * exitOpacity.get());
+
+  const enterY = useTransform(enterProgress, [0, 1], [40, 0]);
+  const exitY = useTransform(exitProgress, [0, 1], [0, -25]);
+  const rawY = useTransform(() => enterY.get() + exitY.get());
+
+  const enterScale = useTransform(enterProgress, [0, 1], [0.98, 1]);
+  const exitScale = useTransform(exitProgress, [0, 1], [1, 0.985]);
+  const rawScale = useTransform(() => enterScale.get() * exitScale.get());
+
+  const enterBlur = useTransform(enterProgress, [0, 0.5], [5, 0]);
+  const exitBlur = useTransform(exitProgress, [0, 1], [0, 4]);
+  const rawBlur = useTransform(() => enterBlur.get() + exitBlur.get());
 
   const opacity = useSpring(rawOpacity, { stiffness: 60, damping: 20 });
   const scrollY = useSpring(rawY, { stiffness: 60, damping: 20 });
@@ -368,7 +388,7 @@ export default function Projects() {
     <section
       id="projects"
       ref={sectionRef}
-      className="relative min-h-screen bg-bg py-32"
+      className="relative min-h-screen bg-bg pt-20 pb-32"
     >
       {/* Ambient environment */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -404,7 +424,7 @@ export default function Projects() {
         {/* Section header */}
         <div className="text-center mb-20">
           <motion.p
-            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/30 mb-3"
+            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/35 mb-3"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}

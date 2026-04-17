@@ -11,7 +11,8 @@ import {
 } from "framer-motion";
 
 /* ── Skill data ── */
-const SKILLS_GROUPS = [
+type SkillItem = { name: string; desc: string; altDesc?: string };
+const SKILLS_GROUPS: { label: string; items: SkillItem[] }[] = [
   {
     label: "Frontend",
     items: [
@@ -34,11 +35,11 @@ const SKILLS_GROUPS = [
   {
     label: "Security",
     items: [
-      { name: "Python", desc: "Scripting & automation \u00b7 security tooling" },
+      { name: "Python", desc: "Scripting & automation \u00b7 security tooling", altDesc: "Scripting & automation \u00b7 materia linked" },
       { name: "Networking", desc: "Protocols & fundamentals \u00b7 TCP/IP stack" },
       { name: "Nmap", desc: "Port scanning \u00b7 network discovery" },
       { name: "Wireshark", desc: "Packet analysis \u00b7 network inspection" },
-      { name: "Vulnerability Analysis", desc: "Threat identification \u00b7 risk assessment" },
+      { name: "Vulnerability Analysis", desc: "Threat identification \u00b7 risk assessment", altDesc: "Threat identification \u00b7 weak point found" },
       { name: "Penetration Testing", desc: "Offensive concepts \u00b7 ethical hacking" },
     ],
   },
@@ -48,7 +49,7 @@ const SKILLS_GROUPS = [
       { name: "Linux", desc: "Arch-based workflow \u00b7 system-level control" },
       { name: "Windows", desc: "Enterprise environments \u00b7 cross-platform" },
       { name: "Git & GitHub", desc: "Version control \u00b7 collaborative workflows" },
-      { name: "Shell / Bash", desc: "Terminal scripting \u00b7 task automation" },
+      { name: "Shell / Bash", desc: "Terminal scripting \u00b7 task automation", altDesc: "Terminal scripting \u00b7 command acquired" },
     ],
   },
 ];
@@ -114,8 +115,9 @@ export default function Skills() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<{ name: string; desc: string } | null>(null);
 
-  const onPillHover = useCallback((name: string, desc: string) => {
-    setHovered({ name, desc });
+  const onPillHover = useCallback((name: string, desc: string, altDesc?: string) => {
+    const useAlt = altDesc && Math.random() < 0.08;
+    setHovered({ name, desc: useAlt ? altDesc : desc });
   }, []);
   const onPillLeave = useCallback(() => setHovered(null), []);
 
@@ -132,19 +134,19 @@ export default function Skills() {
   });
 
   /* Compose enter + exit into final values */
-  const enterOpacity = useTransform(enterProgress, [0, 0.6, 1], [0, 0.8, 1]);
+  const enterOpacity = useTransform(enterProgress, [0, 0.5, 1], [0, 0.7, 1]);
   const exitOpacity = useTransform(exitProgress, [0, 1], [1, 0]);
   const rawOpacity = useTransform(() => enterOpacity.get() * exitOpacity.get());
 
-  const enterY = useTransform(enterProgress, [0, 1], [80, 0]);
+  const enterY = useTransform(enterProgress, [0, 1], [40, 0]);
   const exitY = useTransform(exitProgress, [0, 1], [0, -30]);
   const rawY = useTransform(() => enterY.get() + exitY.get());
 
-  const enterScale = useTransform(enterProgress, [0, 1], [0.96, 1]);
+  const enterScale = useTransform(enterProgress, [0, 1], [0.98, 1]);
   const exitScale = useTransform(exitProgress, [0, 1], [1, 0.98]);
   const rawScale = useTransform(() => enterScale.get() * exitScale.get());
 
-  const enterBlur = useTransform(enterProgress, [0, 0.6], [8, 0]);
+  const enterBlur = useTransform(enterProgress, [0, 0.5], [5, 0]);
   const exitBlur = useTransform(exitProgress, [0, 1], [0, 5]);
   const rawBlur = useTransform(() => enterBlur.get() + exitBlur.get());
 
@@ -262,7 +264,7 @@ export default function Skills() {
                       delay={delay}
                       isActive={hovered?.name === item.name}
                       isDimmed={hovered !== null && hovered.name !== item.name}
-                      onHover={() => onPillHover(item.name, item.desc)}
+                      onHover={() => onPillHover(item.name, item.desc, item.altDesc)}
                       onLeave={onPillLeave}
                     />
                   );

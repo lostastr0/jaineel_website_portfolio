@@ -163,17 +163,17 @@ body {
 
 .hero-presence {
   opacity: 0;
-  animation: hero-presence 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+  animation: hero-presence 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.05s + var(--preloader-offset)) forwards;
 }
 
 .hero-slide-in {
   opacity: 0;
-  animation: hero-fade-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-fade-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) calc(0s + var(--preloader-offset)) forwards;
 }
 
 .hero-fade-in {
   opacity: 0;
-  animation: hero-fade-in 0.8s ease-out forwards;
+  animation: hero-fade-in 0.8s ease-out calc(0s + var(--preloader-offset)) forwards;
 }
 
 /* ═══ Navbar ═══ */
@@ -184,7 +184,16 @@ body {
 
 .nav-enter {
   opacity: 0;
-  animation: nav-fade 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  animation: nav-fade 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(0.4s + var(--preloader-offset)) forwards;
+}
+
+/* ═══ Preloader delay offset ═══ */
+:root {
+  --preloader-offset: 0ms;
+}
+
+.preloader-active {
+  --preloader-offset: 900ms;
 }
 
 /* ═══ Resume toast ═══ */
