@@ -83,9 +83,9 @@ Currently in active development.
 
 ## Contact
 
-* GitHub: https://github.com/your-username
-* LinkedIn: https://linkedin.com/in/your-profile
-* Email: [your@email.com](mailto:your@email.com)
+* GitHub: https://github.com/jaineeldev
+* LinkedIn: https://www.linkedin.com/in/jaineel-khatri/
+* Email: [khatrijaineel@gmail.com](mailto:your@email.com)
 
 ---
 
