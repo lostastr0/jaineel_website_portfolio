@@ -29,9 +29,10 @@ html {
 }
 
 /* Restore default cursor on touch / mobile devices */
-@media (pointer: coarse) {
+@media (hover: none) and (pointer: coarse) {
   html { cursor: auto; }
   *, *::before, *::after { cursor: auto !important; }
+  .hero-cursor { display: none !important; }
 }
 
 body {
@@ -199,7 +200,22 @@ body {
 }
 
 .preloader-active {
-  --preloader-offset: 900ms;
+  --preloader-offset: 1400ms;
+}
+
+/* ═══ Preloader — terminal boot ═══ */
+@keyframes preloader-line-in {
+  0%   { opacity: 0; transform: translateY(3px); filter: blur(3px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.preloader-line {
+  animation: preloader-line-in 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes preloader-dot-pulse {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px rgba(52,211,153,0.3); }
+  50%      { opacity: 1;   box-shadow: 0 0 8px rgba(52,211,153,0.5); }
 }
 
 /* ═══ Resume toast ═══ */
@@ -233,6 +249,27 @@ body {
 
 .resume-toast-exit {
   animation: toast-out 0.28s cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
+}
+
+/* ═══ Mobile menu — clean pop-down ═══ */
+@keyframes mobile-menu-drop {
+  0%   { opacity: 0; transform: translateY(-12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-menu-drop {
+  animation: mobile-menu-drop 260ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: top center;
+}
+
+@keyframes mobile-menu-item-in {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-menu-item {
+  opacity: 0;
+  animation: mobile-menu-item-in 280ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ═══ Utility ═══ */

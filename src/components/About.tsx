@@ -41,14 +41,22 @@ function InfoRow({
 }) {
   return (
     <motion.div
-      className="group relative flex items-baseline justify-between gap-6 py-3.5 px-3 -mx-3 rounded-lg border-b border-white/[0.06] last:border-b-0 hover:border-white/[0.10] hover:bg-white/[0.03] transition-all duration-300"
+      className="group relative flex items-baseline justify-between gap-6 py-3.5 px-3 -mx-3 rounded-lg border-b border-white/6 last:border-b-0 hover:border-white/12 hover:bg-white/5 transition-all duration-300"
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 0.5, delay, ease }}
     >
       {/* Left accent line on hover */}
-      <span className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full bg-blue-500/0 group-hover:bg-blue-500/25 transition-colors duration-300" />
+      <span className="absolute left-0 top-2 bottom-2 w-0.5 rounded-full bg-blue-500/0 group-hover:bg-blue-500/40 transition-colors duration-300" style={{ boxShadow: "0 0 0 rgba(37,99,235,0)" }} />
+      {/* Subtle row glow on hover */}
+      <span
+        className="absolute inset-0 rounded-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 100% at 0% 50%, rgba(37,99,235,0.08) 0%, transparent 70%)",
+        }}
+      />
       <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/35 shrink-0 group-hover:text-white/50 transition-colors duration-300">
         {label}
       </span>
@@ -150,6 +158,18 @@ export default function About() {
             filter: "blur(40px)",
           }}
         />
+        {/* Subtle scan-line texture — technical feel */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 4px)",
+            maskImage:
+              "radial-gradient(ellipse 60% 55% at 50% 50%, black 0%, transparent 85%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 60% 55% at 50% 50%, black 0%, transparent 85%)",
+          }}
+        />
         <div
           className="absolute inset-0"
           style={{
@@ -186,7 +206,7 @@ export default function About() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.05, ease }}
+            transition={{ duration: 0.6, delay: 0.12, ease }}
           >
             About
           </motion.h2>
@@ -195,7 +215,7 @@ export default function About() {
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.1, ease }}
+            transition={{ duration: 0.5, delay: 0.24, ease }}
           >
             Security-focused developer building modern, reliable systems.
           </motion.p>

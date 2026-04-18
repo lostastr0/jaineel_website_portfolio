@@ -12,6 +12,11 @@ import {
 
 /* ── Skill data ── */
 type SkillItem = { name: string; desc: string; altDesc?: string };
+const EXPLORING: SkillItem[] = [
+  { name: "C++", desc: "Systems programming \u00b7 memory & performance" },
+  { name: "Rust", desc: "Memory safety \u00b7 modern systems language" },
+  { name: "Docker", desc: "Containerisation \u00b7 deployable environments" },
+];
 const SKILLS_GROUPS: { label: string; items: SkillItem[] }[] = [
   {
     label: "Frontend",
@@ -101,7 +106,7 @@ function SkillPill({
       >
         <span
           className="text-[13px] font-medium tracking-wide transition-colors duration-300"
-          style={{ color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.70)" }}
+          style={{ color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.78)" }}
         >
           {name}
         </span>
@@ -220,12 +225,12 @@ export default function Skills() {
             System
           </motion.p>
           <motion.h2
-            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/95"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
           >
             Stack
           </motion.h2>
@@ -234,7 +239,7 @@ export default function Skills() {
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             Tools and technologies I build with.
           </motion.p>
@@ -274,6 +279,51 @@ export default function Skills() {
           ))}
         </div>
 
+        {/* Currently exploring — aspirational row, visually distinct */}
+        <div className="mt-14 pt-10 border-t border-white/5">
+          <motion.p
+            className="text-[11px] font-mono tracking-[0.22em] uppercase text-white/25 mb-3.5 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+          >
+            Currently Exploring
+          </motion.p>
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {EXPLORING.map((item, i) => {
+              const delay = (pillIndex + i) * 0.06;
+              const isActive = hovered?.name === item.name;
+              const isDimmed = hovered !== null && !isActive;
+              return (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
+                  onMouseEnter={() => onPillHover(item.name, item.desc)}
+                  onMouseLeave={onPillLeave}
+                >
+                  <motion.div
+                    className="relative px-4 py-1.5 rounded-full border border-dashed backdrop-blur-md transition-all duration-300"
+                    animate={{
+                      scale: isActive ? 1.03 : 1,
+                      borderColor: isActive ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.08)",
+                      opacity: isDimmed ? 0.35 : 0.7,
+                    }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <span className="text-[11px] font-mono tracking-[0.08em] text-white/55">
+                      {item.name}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Active detail readout */}
         <div className="mt-14 h-9 flex items-center justify-center">
           <AnimatePresence mode="wait">
@@ -286,7 +336,7 @@ export default function Skills() {
                 exit={{ opacity: 0, y: -6, filter: "blur(3px)" }}
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span className="text-[14px] font-medium text-white/90 tracking-wide">
+                <span className="text-[14px] font-medium text-white/95 tracking-wide">
                   {hovered.name}
                 </span>
                 <span className="w-5 h-px bg-white/20" />

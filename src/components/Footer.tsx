@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import Logo from "./Logo";
 
 const LINKS = [
-  { label: "GitHub", href: "https://github.com/jaineel" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/jaineel" },
-  { label: "Email", href: "mailto:your@email.com" },
+  { label: "GitHub", href: "https://github.com/jaineeldev" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/jaineel-khatri/" },
+  { label: "Email", href: "mailto:khatrijaineel@gmail.com" },
 ];
 
 export default function Footer() {
-  const [footerLine] = useState(() => Math.random() < 0.10 ? "Built with purpose." : "Built with intention.");
+  const [footerLine, setFooterLine] = useState("Built with intention.");
+  useEffect(() => {
+    if (Math.random() < 0.1) setFooterLine("Built with purpose.");
+  }, []);
   const footerRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const raf = useRef<number>(0);
@@ -36,7 +40,7 @@ export default function Footer() {
       c.x = lerp(c.x, m.inside ? m.x : 50, 0.05);
       c.y = lerp(c.y, m.inside ? m.y : 50, 0.05);
       if (glowRef.current) {
-        const op = m.inside ? 0.07 : 0;
+        const op = m.inside ? 0.11 : 0;
         glowRef.current.style.background =
           `radial-gradient(500px circle at ${c.x}% ${c.y}%, rgba(37,99,235,${op}) 0%, transparent 60%)`;
       }
@@ -73,11 +77,8 @@ export default function Footer() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-7">
         <div className="relative flex items-center justify-between max-md:flex-col max-md:gap-4">
           {/* Left — monogram */}
-          <div className="flex items-center gap-2 group max-md:order-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-400/80 transition-colors duration-500 shadow-[0_0_6px_rgba(37,99,235,0.3)]" />
-            <span className="text-[13px] font-mono tracking-[0.12em] text-white/35 group-hover:text-white/55 transition-colors duration-300">
-              JK.
-            </span>
+          <div className="flex items-center group max-md:order-1 cursor-default text-white/45 group-hover:text-white/75 transition-colors duration-300">
+            <Logo size={13} />
           </div>
 
           {/* Center — absolute positioned for true optical centering */}

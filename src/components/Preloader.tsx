@@ -2,101 +2,167 @@
 
 import { useEffect, useState } from "react";
 
-type Phase = "hold" | "appear" | "settle" | "release" | "done";
+type Phase = "running" | "releasing" | "done";
+
+/* ── Timing ──
+ * 0 → COUNT_MS:               counter animates 0 → 100
+ * COUNT_MS → COUNT_MS + HOLD: brief hold at 100%
+ * + FADE_MS:                  overlay fades, hero takes over
+ */
+const COUNT_MS = 1250;
+const HOLD_MS = 150;
+const FADE_MS = 400;
+const RELEASE_AT = COUNT_MS + HOLD_MS;
+const DONE_AT = RELEASE_AT + FADE_MS;
 
 export default function Preloader() {
-  const [phase, setPhase] = useState<Phase>("hold");
+  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<Phase>("running");
 
   useEffect(() => {
     document.documentElement.classList.add("preloader-active");
 
-    /* hold: dark, nothing visible (0–100ms) */
-    const t1 = setTimeout(() => setPhase("appear"), 100);
-    /* appear: mark fades in with blur-to-sharp (100–550ms) */
-    const t2 = setTimeout(() => setPhase("settle"), 550);
-    /* settle: subtle scale + glow refinement (550–900ms) */
-    const t3 = setTimeout(() => setPhase("release"), 900);
-    /* release: fade out, hero begins underneath (900–1350ms) */
-    const t4 = setTimeout(() => setPhase("done"), 1350);
+    let raf = 0;
+    const start = performance.now();
 
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const t = Math.min(elapsed / COUNT_MS, 1);
+      const eased = 1 - Math.pow(1 - t, 2.4);
+      setProgress(eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    const t1 = setTimeout(() => setPhase("releasing"), RELEASE_AT);
+    const t2 = setTimeout(() => setPhase("done"), DONE_AT);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
 
   if (phase === "done") return null;
 
-  const isVisible = phase === "appear" || phase === "settle";
+  const pct = Math.min(100, Math.round(progress * 100));
+  const padded = String(pct).padStart(3, "0");
 
   return (
     <div
       className="fixed inset-0 z-9999 flex items-center justify-center bg-bg"
       style={{
-        opacity: phase === "release" ? 0 : 1,
-        transition: phase === "release"
-          ? "opacity 420ms cubic-bezier(0.16, 1, 0.3, 1)"
-          : "none",
+        opacity: phase === "releasing" ? 0 : 1,
+        transition:
+          phase === "releasing"
+            ? "opacity 500ms cubic-bezier(0.16, 1, 0.3, 1)"
+            : "none",
         pointerEvents: "none",
       }}
     >
-      {/* Ambient glow — breathes in during settle */}
+      {/* Ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
-          width: "35vw",
-          height: "35vh",
-          background: "radial-gradient(ellipse at center, rgba(37,99,235,0.05) 0%, transparent 65%)",
-          filter: "blur(50px)",
-          opacity: phase === "settle" ? 1 : phase === "appear" ? 0.4 : 0,
-          transform: `scale(${phase === "settle" ? 1.1 : 1})`,
-          transition: phase === "appear"
-            ? "opacity 350ms ease"
-            : "opacity 350ms ease, transform 600ms cubic-bezier(0.16, 1, 0.3, 1)",
+          width: "32vw",
+          height: "32vh",
+          background:
+            "radial-gradient(ellipse at center, rgba(37,99,235,0.06) 0%, transparent 65%)",
+          filter: "blur(70px)",
         }}
       />
 
-      {/* Mark + line */}
-      <div className="relative flex flex-col items-center gap-3.5">
+      <div className="relative flex flex-col items-center gap-7">
+        {/* System label */}
         <div
-          style={{
-            opacity: isVisible ? 1 : phase === "release" ? 0 : 0,
-            filter: phase === "hold" ? "blur(8px)" : phase === "appear" ? "blur(0px)" : "blur(0px)",
-            transform:
-              phase === "hold" ? "scale(0.96) translateY(0)"
-              : phase === "appear" ? "scale(1) translateY(0)"
-              : phase === "settle" ? "scale(1) translateY(0)"
-              : "scale(1) translateY(-8px)",
-            transition:
-              phase === "appear"
-                ? "opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), filter 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)"
-                : "opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
+          className="flex items-center gap-2.5 opacity-0 preloader-line"
+          style={{ animationDelay: "80ms", fontFamily: "var(--font-mono)" }}
         >
           <span
-            className="text-[20px] font-semibold tracking-tight select-none"
+            className="inline-block w-1 h-1 rounded-full bg-emerald-400/70"
             style={{
-              fontFamily: "var(--font-display)",
-              color: phase === "settle" ? "rgba(255,255,255,0.90)" : "rgba(255,255,255,0.80)",
-              transition: "color 400ms ease",
+              boxShadow: "0 0 6px rgba(52,211,153,0.4)",
+              animation: "preloader-dot-pulse 1.8s ease-in-out infinite",
             }}
-          >
-            JK<span className="text-accent">.</span>
+          />
+          <span className="text-[9px] tracking-[0.32em] uppercase text-white/25 select-none">
+            jk.system &middot; calibrating
           </span>
         </div>
 
-        {/* Accent line — expands on appear, holds, collapses on release */}
+        {/* Counter */}
         <div
+          className="flex items-baseline gap-1 tabular-nums select-none opacity-0 preloader-line"
+          style={{ animationDelay: "180ms", fontFamily: "var(--font-mono)" }}
+        >
+          <span
+            className="text-[clamp(4rem,9vw,7rem)] font-medium leading-none tracking-[-0.04em]"
+            style={{
+              color: "rgba(255,255,255,0.92)",
+              textShadow: "0 0 40px rgba(37,99,235,0.12)",
+            }}
+          >
+            {padded}
+          </span>
+          <span className="text-[clamp(1rem,1.8vw,1.4rem)] text-white/30 leading-none font-medium">
+            %
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div
+          className="relative overflow-hidden opacity-0 preloader-line"
           style={{
-            width: isVisible ? 36 : 0,
+            width: "min(320px, 64vw)",
             height: 1,
-            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)",
-            opacity: phase === "release" ? 0 : 1,
-            transition:
-              phase === "appear"
-                ? "width 450ms cubic-bezier(0.16, 1, 0.3, 1) 120ms, opacity 200ms ease"
-                : phase === "release"
-                  ? "width 250ms ease, opacity 200ms ease"
-                  : "width 300ms ease",
+            animationDelay: "260ms",
           }}
-        />
+        >
+          <div className="absolute inset-0 bg-white/8" />
+          <div
+            className="absolute left-0 top-0 bottom-0"
+            style={{
+              width: `${progress * 100}%`,
+              background:
+                "linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(37,99,235,0.7) 50%, rgba(255,255,255,0.4) 100%)",
+              boxShadow: "0 0 6px rgba(37,99,235,0.35)",
+              transition: "width 70ms linear",
+            }}
+          />
+          <div
+            className="absolute top-1/2 -translate-y-1/2"
+            style={{
+              left: `calc(${progress * 100}% - 2px)`,
+              width: 4,
+              height: 4,
+              borderRadius: "50%",
+              background: "rgba(37,99,235,0.9)",
+              boxShadow:
+                "0 0 10px rgba(37,99,235,0.8), 0 0 20px rgba(37,99,235,0.3)",
+              opacity: progress < 1 ? 1 : 0,
+              transition: "opacity 300ms ease",
+            }}
+          />
+        </div>
+
+        {/* Status — swaps at completion */}
+        <div
+          className="h-3 flex items-center opacity-0 preloader-line"
+          style={{ animationDelay: "340ms", fontFamily: "var(--font-mono)" }}
+        >
+          <span
+            className="text-[9px] tracking-[0.32em] uppercase select-none transition-colors duration-500"
+            style={{
+              color:
+                progress < 1
+                  ? "rgba(255,255,255,0.20)"
+                  : "rgba(52,211,153,0.75)",
+            }}
+          >
+            {progress < 1 ? "loading assets" : "ready"}
+          </span>
+        </div>
       </div>
     </div>
   );

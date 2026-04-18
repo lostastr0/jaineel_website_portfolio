@@ -10,33 +10,57 @@ import {
 } from "framer-motion";
 
 /* ── Project data ── */
-const PROJECTS = [
+type Project = {
+  title: string;
+  description: string;
+  features?: string[];
+  stack: string[];
+  liveUrl: string | null;
+  githubUrl: string | null;
+  accentColor: string;
+  variant: "ui" | "terminal";
+};
+
+const PROJECTS: Project[] = [
   {
     title: "Portfolio v2",
     description:
       "This site \u2014 a premium personal portfolio built with Next.js, Tailwind CSS, and Framer Motion. Designed for speed, clarity, and strong visual identity.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: null,
+    githubUrl: null,
     accentColor: "37,99,235",
+    variant: "ui",
   },
   {
-    title: "Network Scanner",
+    title: "Hawthorne Corner Store",
     description:
-      "A Python-based network reconnaissance tool with port scanning, service detection, and exportable reports. Built for learning offensive security fundamentals.",
-    stack: ["Python", "Nmap", "Networking", "CLI"],
+      "A clean, modern website built for a local convenience store to improve visibility, accessibility, and customer trust. Designed to clearly present store information, services, and location while maintaining a simple and reliable user experience.",
+    features: [
+      "Focused on real-world usability \u2014 including clear opening hours, location access, and mobile-friendly layout. Built to feel fast, familiar, and easy to navigate for everyday users.",
+    ],
+    stack: ["React", "Vite", "Tailwind CSS"],
+    liveUrl: "https://www.hawthornecornerstore.com.au/",
+    githubUrl: "https://github.com/jaineeldev/hcs_2.0",
+    accentColor: "20,184,166",
+    variant: "ui",
+  },
+  {
+    title: "System Fingerprint Tool",
+    description:
+      "Python-based system reconnaissance tool that collects host fingerprint data and performs full-range port scanning using concurrent execution. Designed to simulate real-world enumeration workflows in cybersecurity.",
+    features: [
+      "Full port scan (1\u201365535)",
+      "Host fingerprinting",
+      "Multi-threading",
+      "CSV output",
+      "GUI with live status",
+    ],
+    stack: ["Python", "Networking", "Threading", "Port Scanning", "System Analysis"],
     liveUrl: null,
-    githubUrl: "#",
+    githubUrl: "https://github.com/jaineeldev/system-fingerprint-tool",
     accentColor: "99,102,241",
-  },
-  {
-    title: "Secure Auth API",
-    description:
-      "RESTful authentication service with JWT tokens, rate limiting, and input validation. Focused on secure-by-default patterns and clean architecture.",
-    stack: ["Node.js", "Express", "SQL", "REST APIs"],
-    liveUrl: null,
-    githubUrl: "#",
-    accentColor: "59,130,246",
+    variant: "terminal",
   },
 ];
 
@@ -64,14 +88,11 @@ function ProjectBlock({
   index: number;
 }) {
   const isEven = index % 2 === 0;
-  const isFeatured = index === 0;
   const cardRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
   const raf = useRef<number>(0);
   const mouse = useRef({ x: 0.5, y: 0.5, inside: false });
-  const current = useRef({ rx: 0, ry: 0, gx: 50, gy: 50 });
+  const current = useRef({ gx: 50, gy: 50 });
 
   const lerp = useCallback((a: number, b: number, t: number) => a + (b - a) * t, []);
 
@@ -94,30 +115,15 @@ function ProjectBlock({
       const c = current.current;
       const m = mouse.current;
 
-      const targetRx = m.inside ? (m.y - 0.5) * -4 : 0;
-      const targetRy = m.inside ? (m.x - 0.5) * 4 : 0;
       const targetGx = m.inside ? m.x * 100 : 50;
       const targetGy = m.inside ? m.y * 100 : 50;
 
-      c.rx = lerp(c.rx, targetRx, 0.08);
-      c.ry = lerp(c.ry, targetRy, 0.08);
       c.gx = lerp(c.gx, targetGx, 0.1);
       c.gy = lerp(c.gy, targetGy, 0.1);
 
-      if (card) {
-        card.style.transform = `perspective(800px) rotateX(${c.rx}deg) rotateY(${c.ry}deg)`;
-      }
-
       if (glowRef.current) {
         glowRef.current.style.background =
-          `radial-gradient(600px circle at ${c.gx}% ${c.gy}%, rgba(${project.accentColor},${m.inside ? 0.07 : 0}) 0%, transparent 60%)`;
-      }
-
-      if (imageRef.current) {
-        imageRef.current.style.transform = `translateZ(${m.inside ? -8 : 0}px)`;
-      }
-      if (textRef.current) {
-        textRef.current.style.transform = `translateZ(${m.inside ? 12 : 0}px)`;
+          `radial-gradient(600px circle at ${c.gx}% ${c.gy}%, rgba(${project.accentColor},${m.inside ? 0.11 : 0}) 0%, transparent 60%)`;
       }
 
       raf.current = requestAnimationFrame(tick);
@@ -138,36 +144,33 @@ function ProjectBlock({
     <motion.div
       initial={{ opacity: 0, y: 40, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -6 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.6, ease }}
-      style={{ transformStyle: "preserve-3d" }}
     >
       <div
         ref={cardRef}
         className="group relative rounded-2xl border overflow-hidden"
         style={{
-          borderColor: isFeatured ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.07)",
-          background: isFeatured
-            ? "linear-gradient(135deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.02) 100%)"
-            : "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%)",
-          boxShadow: isFeatured
-            ? "0 4px 50px rgba(0,0,0,0.3), 0 0 40px rgba(37,99,235,0.04), inset 0 1px 0 rgba(255,255,255,0.06)"
-            : "0 4px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
-          transition: "box-shadow 0.5s ease, border-color 0.5s ease",
-          transformStyle: "preserve-3d",
-          willChange: "transform",
+          borderColor: "rgba(255,255,255,0.09)",
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.018) 100%)",
+          boxShadow:
+            "0 4px 50px rgba(0,0,0,0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(255,255,255,0.05)",
+          transition:
+            "box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.boxShadow =
-            `0 16px 70px rgba(0,0,0,0.4), 0 0 50px rgba(${project.accentColor},0.06), inset 0 1px 0 rgba(255,255,255,0.06)`;
+            `0 24px 90px rgba(0,0,0,0.5), 0 0 80px rgba(${project.accentColor},0.14), 0 0 0 1px rgba(${project.accentColor},0.08), inset 0 1px 0 rgba(255,255,255,0.08)`;
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(255,255,255,0.13)";
+            "rgba(255,255,255,0.20)";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.boxShadow =
-            "0 4px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)";
+            "0 4px 50px rgba(0,0,0,0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(255,255,255,0.05)";
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(255,255,255,0.07)";
+            "rgba(255,255,255,0.09)";
         }}
       >
         {/* Mouse-tracking glow */}
@@ -192,20 +195,14 @@ function ProjectBlock({
           className={`relative flex flex-col ${
             isEven ? "md:flex-row" : "md:flex-row-reverse"
           }`}
-          style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Visual preview area — sits slightly behind */}
+          {/* Visual preview area */}
           <div
-            ref={imageRef}
             className="relative md:w-[45%] aspect-[16/10] md:aspect-auto min-h-45 md:min-h-65 overflow-hidden"
-            style={{
-              transition: "transform 0.4s ease",
-              transformStyle: "preserve-3d",
-            }}
           >
             <div className="absolute inset-0 flex items-center justify-center p-10">
               <div
-                className="w-full max-w-[300px] rounded-lg border border-white/[0.07] group-hover:border-white/[0.12] transition-all duration-500"
+                className="w-full max-w-75 rounded-lg border border-white/7 group-hover:border-white/12 transition-all duration-500"
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%)",
@@ -214,30 +211,63 @@ function ProjectBlock({
                 }}
               >
                 {/* Window chrome */}
-                <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/[0.06]">
+                <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/6">
                   <span className="w-2 h-2 rounded-full bg-white/12" />
                   <span className="w-2 h-2 rounded-full bg-white/8" />
                   <span className="w-2 h-2 rounded-full bg-white/8" />
+                  {project.variant === "terminal" && (
+                    <span className="ml-auto text-[9px] font-mono tracking-[0.15em] text-white/20 uppercase">
+                      recon
+                    </span>
+                  )}
                 </div>
-                {/* Placeholder lines */}
-                <div className="px-4 py-5 space-y-3">
-                  <div className="h-1.5 w-[45%] rounded-full bg-white/7" />
-                  <div className="h-1.5 w-[70%] rounded-full bg-white/5" />
-                  <div className="h-1.5 w-[55%] rounded-full bg-white/4" />
-                  <div className="h-1.5 w-[35%] rounded-full bg-white/3" />
-                </div>
+
+                {project.variant === "terminal" ? (
+                  /* Terminal output */
+                  <div
+                    className="px-4 py-4 font-mono text-[10px] leading-relaxed"
+                    style={{ textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
+                  >
+                    <div className="flex gap-2 text-white/55">
+                      <span className="text-accent/80 select-none">&gt;</span>
+                      <span>scanning ports...</span>
+                    </div>
+                    <div className="flex gap-2 text-white/70">
+                      <span className="text-emerald-400/85 select-none">[+]</span>
+                      <span>port 22 open</span>
+                    </div>
+                    <div className="flex gap-2 text-white/70">
+                      <span className="text-emerald-400/85 select-none">[+]</span>
+                      <span>port 80 open</span>
+                    </div>
+                    <div className="flex gap-2 text-white/70">
+                      <span className="text-emerald-400/85 select-none">[+]</span>
+                      <span>fingerprint collected</span>
+                    </div>
+                    <div className="flex gap-2 text-white/50 mt-1 items-center">
+                      <span className="text-accent/80 select-none">&gt;</span>
+                      <span
+                        className="inline-block w-1.5 h-3 bg-white/55"
+                        style={{ animation: "preloader-dot-pulse 1s ease-in-out infinite" }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  /* UI placeholder lines */
+                  <div className="px-4 py-5 space-y-3">
+                    <div className="h-1.5 w-[45%] rounded-full bg-white/7" />
+                    <div className="h-1.5 w-[70%] rounded-full bg-white/5" />
+                    <div className="h-1.5 w-[55%] rounded-full bg-white/4" />
+                    <div className="h-1.5 w-[35%] rounded-full bg-white/3" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Text content — sits slightly forward */}
+          {/* Text content */}
           <div
-            ref={textRef}
             className="flex-1 flex flex-col justify-center px-5 py-8 md:px-12 md:py-14"
-            style={{
-              transition: "transform 0.4s ease",
-              transformStyle: "preserve-3d",
-            }}
           >
             {/* Project number */}
             <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/20 mb-4">
@@ -253,9 +283,16 @@ function ProjectBlock({
             </h3>
 
             {/* Description */}
-            <p className="text-[14px] text-white/40 leading-relaxed mb-7 max-w-md">
+            <p className="text-[14px] text-white/40 leading-relaxed mb-5 max-w-md">
               {project.description}
             </p>
+
+            {/* Key features — compact inline, only when provided */}
+            {project.features && project.features.length > 0 && (
+              <p className="text-[11px] font-mono tracking-[0.02em] text-white/30 leading-relaxed mb-7 max-w-md">
+                {project.features.join("  \u00b7  ")}
+              </p>
+            )}
 
             {/* Tech stack pills */}
             <div className="flex flex-wrap gap-2 mb-8">
@@ -265,7 +302,7 @@ function ProjectBlock({
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-3">
+            <div className="relative z-20 flex items-center gap-3">
               {project.liveUrl && (
                 <a
                   href={project.liveUrl}
@@ -438,7 +475,7 @@ export default function Projects() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.05, ease }}
+            transition={{ duration: 0.6, delay: 0.12, ease }}
           >
             Work
           </motion.h2>
@@ -447,7 +484,7 @@ export default function Projects() {
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.1, ease }}
+            transition={{ duration: 0.5, delay: 0.24, ease }}
           >
             Projects I've built and things I'm working on.
           </motion.p>

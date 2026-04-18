@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  AnimatePresence,
   motion,
   useScroll,
   useTransform,
@@ -11,9 +12,11 @@ import {
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+const EMAIL = "khatrijaineel@gmail.com";
+
 const SOCIALS = [
-  { label: "GitHub", href: "https://github.com/jaineel" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/jaineel" },
+  { label: "GitHub", href: "https://github.com/jaineeldev" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/jaineel-khatri/" },
 ];
 
 /* ── CTA container with cursor-reactive glow + ambient float ── */
@@ -70,18 +73,18 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 24, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5, delay: 0.25, ease }}
+      transition={{ duration: 0.7, delay: 0.3, ease }}
       className="w-full max-w-md mx-auto"
     >
       <motion.div
         ref={containerRef}
-        className="relative rounded-2xl border border-white/7 backdrop-blur-sm px-5 py-8 md:px-10 md:py-12 text-center overflow-hidden"
+        className="relative rounded-2xl border border-white/10 backdrop-blur-sm px-5 py-8 md:px-10 md:py-12 text-center overflow-hidden"
         style={{
-          background: "rgba(255,255,255,0.022)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 2px 24px rgba(0,0,0,0.15)",
+          background: "rgba(255,255,255,0.03)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 32px rgba(0,0,0,0.25), 0 0 60px rgba(37,99,235,0.06)",
         }}
         animate={{
           y: [0, -6, 0],
@@ -108,6 +111,17 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
 
 export default function Contact() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* silent fail — mailto fallback is always available */
+    }
+  }, []);
 
   /* Scroll-driven entrance */
   const { scrollYProgress: enterProgress } = useScroll({
@@ -211,7 +225,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, delay: 0.05, ease }}
+          transition={{ duration: 0.6, delay: 0.12, ease }}
         >
           Let&apos;s build something.
         </motion.h2>
@@ -222,9 +236,20 @@ export default function Contact() {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5, delay: 0.1, ease }}
+          transition={{ duration: 0.5, delay: 0.24, ease }}
         >
           Open to opportunities, collaborations, or just a conversation.
+        </motion.p>
+
+        {/* Personality line */}
+        <motion.p
+          className="mt-2 text-[12px] font-mono tracking-[0.04em] text-white/25 italic"
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.32, ease }}
+        >
+          Always open to building something interesting.
         </motion.p>
 
         {/* Availability indicator */}
@@ -257,23 +282,23 @@ export default function Contact() {
           <CTAContainer>
             {/* Primary CTA */}
             <a
-              href="mailto:your@email.com"
-              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-white/15 hover:border-white/28 bg-white/6 hover:bg-white/10 transition-all duration-300"
+              href={`mailto:${EMAIL}`}
+              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-white/18 hover:border-white/32 bg-white/6 hover:bg-white/10 transition-all duration-300"
               style={{
                 boxShadow:
-                  "0 0 20px 2px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(255,255,255,0.06)",
                 transform: "scale(1.02)",
                 transition:
                   "box-shadow 0.4s ease, background 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1)",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 32px 5px rgba(37,99,235,0.18), 0 0 64px 10px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.08)";
-                (e.currentTarget as HTMLElement).style.transform = "scale(1.02) translateY(-2px)";
+                  "0 0 40px 6px rgba(37,99,235,0.24), 0 0 80px 14px rgba(37,99,235,0.12), inset 0 1px 0 rgba(255,255,255,0.10)";
+                (e.currentTarget as HTMLElement).style.transform = "scale(1.04) translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 20px 2px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.06)";
+                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(255,255,255,0.06)";
                 (e.currentTarget as HTMLElement).style.transform = "scale(1.02)";
               }}
             >
@@ -294,6 +319,66 @@ export default function Contact() {
                 />
               </svg>
             </a>
+
+            {/* Copy-email affordance */}
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="group relative mt-5 mx-auto flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-white/5 transition-colors duration-200"
+              aria-label="Copy email address"
+            >
+              <span className="text-[11px] font-mono tracking-[0.04em] text-white/40 group-hover:text-white/65 transition-colors duration-200">
+                {EMAIL}
+              </span>
+              <span className="relative w-3.5 h-3.5 inline-flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                  {copied ? (
+                    <motion.svg
+                      key="check"
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.6 }}
+                      transition={{ duration: 0.15 }}
+                      className="w-3.5 h-3.5 text-emerald-400/90"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </motion.svg>
+                  ) : (
+                    <motion.svg
+                      key="copy"
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.6 }}
+                      transition={{ duration: 0.15 }}
+                      className="w-3.5 h-3.5 text-white/35 group-hover:text-white/65 transition-colors duration-200"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </motion.svg>
+                  )}
+                </AnimatePresence>
+              </span>
+              <AnimatePresence>
+                {copied && (
+                  <motion.span
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -2 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-[10px] font-mono tracking-[0.12em] uppercase text-emerald-400/85"
+                  >
+                    Copied
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
 
             {/* Animated accent line */}
             <motion.div

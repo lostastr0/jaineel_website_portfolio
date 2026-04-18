@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Logo from "./Logo";
 
 const NAV_ITEMS = [
   { label: "Work", href: "#projects" },
@@ -69,19 +70,27 @@ export default function Navbar() {
       <div
         className="fixed top-0 left-0 right-0 z-50 nav-enter pt-2"
         style={{
-          transition: "backdrop-filter 0.4s ease",
-          backdropFilter: scrolled ? "blur(16px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+          transition: "backdrop-filter 0.4s ease, background 0.4s ease, box-shadow 0.4s ease",
+          backdropFilter: scrolled ? "blur(24px) saturate(150%)" : "blur(4px)",
+          WebkitBackdropFilter: scrolled ? "blur(24px) saturate(150%)" : "blur(4px)",
+          background: scrolled
+            ? "linear-gradient(180deg, rgba(5,5,8,0.85) 0%, rgba(5,5,8,0.6) 55%, rgba(5,5,8,0) 100%)"
+            : "linear-gradient(180deg, rgba(5,5,8,0.35) 0%, rgba(5,5,8,0) 100%)",
+          borderBottom: "1px solid transparent",
+          boxShadow: scrolled
+            ? "0 16px 40px -20px rgba(0,0,0,0.55)"
+            : "0 0 0 rgba(0,0,0,0)",
         }}
       >
-        {/* Left — logo, positioned outside container */}
+        {/* Left — logo, pinned to far left of viewport, vertically aligned with nav pill */}
         <a
           href="#home"
           onClick={(e) => { e.preventDefault(); handleNavClick("#home"); }}
-          className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-white/80 hover:text-white tracking-tight transition-colors duration-200"
-          style={{ fontFamily: "var(--font-display)" }}
+          className="absolute left-12 md:left-20 -translate-y-1/2 text-white/80 hover:text-white transition-colors duration-200 flex items-center"
+          style={{ top: "2.25rem" }}
+          aria-label="JK home"
         >
-          JK<span className="text-accent">.</span>
+          <Logo size={16} />
         </a>
 
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -138,7 +147,7 @@ export default function Navbar() {
           {/* Right — mobile toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-[11px] tracking-widest text-white/35 hover:text-white/70 uppercase transition-colors duration-200"
+            className="md:hidden absolute right-6 top-1/2 -translate-y-1/2 text-[11px] tracking-widest text-white/35 hover:text-white/70 uppercase transition-colors duration-200"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? "Close" : "Menu"}
@@ -147,8 +156,18 @@ export default function Navbar() {
         </div>
 
         {/* Info rail — sits directly under nav bar */}
-        <div className="hidden md:flex items-center justify-center mt-1.5 hero-fade-in" style={{ animationDelay: "calc(0.7s + var(--preloader-offset))" }}>
-          <div className="flex items-center gap-2">
+        <div
+          className="hidden md:flex items-center justify-center overflow-hidden"
+          style={{
+            marginTop: scrolled ? 0 : "0.375rem",
+            maxHeight: scrolled ? 0 : "2.5rem",
+            opacity: scrolled ? 0 : 1,
+            transform: scrolled ? "translateY(-6px)" : "translateY(0)",
+            pointerEvents: scrolled ? "none" : "auto",
+            transition: "opacity 0.35s ease, transform 0.35s ease, max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), margin-top 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+        >
+          <div className="flex items-center gap-2 hero-fade-in" style={{ animationDelay: "calc(0.7s + var(--preloader-offset))" }}>
             {/* Available — primary chip */}
             <div
               className="inline-flex items-center gap-2 h-7 px-3.5 rounded-full"
@@ -169,9 +188,9 @@ export default function Navbar() {
                 className="text-[9px] font-mono tracking-[0.16em] uppercase whitespace-nowrap"
                 style={{
                   lineHeight: 1,
-                  paddingTop: 2,
-                  color: scrolled ? "rgba(255,255,255,0.58)" : "rgba(255,255,255,0.50)",
-                  transition: "color 0.4s ease",
+                  transform: "translateY(0.5px)",
+                  color: scrolled ? "rgba(255,255,255,0.62)" : "rgba(255,255,255,0.52)",
+                  transition: "color 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
                 {statusText}
@@ -191,7 +210,7 @@ export default function Navbar() {
                 className="text-[9px] font-mono tracking-[0.16em] uppercase whitespace-nowrap"
                 style={{
                   lineHeight: 1,
-                  paddingTop: 2,
+                  transform: "translateY(0.5px)",
                   color: scrolled ? "rgba(255,255,255,0.40)" : "rgba(255,255,255,0.32)",
                   transition: "color 0.4s ease",
                 }}
@@ -213,7 +232,7 @@ export default function Navbar() {
                 className="text-[9px] font-mono tracking-[0.16em] uppercase whitespace-nowrap"
                 style={{
                   lineHeight: 1,
-                  paddingTop: 2,
+                  transform: "translateY(0.5px)",
                   color: scrolled ? "rgba(255,255,255,0.40)" : "rgba(255,255,255,0.32)",
                   transition: "color 0.4s ease",
                 }}
@@ -227,15 +246,15 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-y-auto hero-fade-in">
+        <div className="md:hidden fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-y-auto mobile-menu-drop">
           <nav className="flex flex-col items-center gap-2">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item, i) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
-                className="text-2xl font-semibold tracking-tight text-white/40 hover:text-white transition-colors py-3 px-8"
-                style={{ fontFamily: "var(--font-display)" }}
+                className="text-2xl font-semibold tracking-tight text-white/40 hover:text-white transition-colors py-3 px-8 mobile-menu-item"
+                style={{ fontFamily: "var(--font-display)", animationDelay: `${80 + i * 50}ms` }}
               >
                 {item.label}
               </a>

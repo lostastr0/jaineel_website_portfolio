@@ -8,10 +8,9 @@ export default function Hero() {
   const firstNameRef = useRef<HTMLHeadingElement>(null);
   const lastNameRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
   const scrollProgress = useRef(0);
   const [toastState, setToastState] = useState<"hidden" | "entering" | "dismissing">("hidden");
-  const [buildingText] = useState(() => Math.random() < 0.08 ? "The cycle continues" : "Still building");
+  const [buildingText, setBuildingText] = useState("Still building");
   const resumeBtnRef = useRef<HTMLButtonElement>(null);
   const toastRef = useRef<HTMLDivElement>(null);
 
@@ -61,82 +60,9 @@ export default function Hero() {
     );
   }, []);
 
-  /* ── Custom cursor (soft glow) — disabled on touch devices ── */
+  /* ── Rare text swap — client-only to avoid hydration mismatch ── */
   useEffect(() => {
-    const el = cursorRef.current;
-    if (!el) return;
-
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      el.style.display = "none";
-      return;
-    }
-
-    let mouseX = 0, mouseY = 0;
-    let curX = 0, curY = 0;
-    let hovering = false;
-    let clicking = false;
-    let curScale = 1;
-    let glowOpacity = 1;
-    let isIdle = false;
-    let idleTimer: ReturnType<typeof setTimeout>;
-    let raf: number;
-
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-    const resetIdle = () => {
-      isIdle = false;
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => { isIdle = true; }, 1000);
-    };
-
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      const target = e.target as HTMLElement;
-      hovering = !!target.closest("a, button, [role='button'], input, textarea, select");
-      resetIdle();
-    };
-
-    const onDown = () => { clicking = true; };
-    const onUp = () => { clicking = false; };
-
-    const onEnter = () => { el.style.opacity = "1"; };
-    const onLeave = () => { el.style.opacity = "0"; };
-
-    const tick = () => {
-      curX = lerp(curX, mouseX, 0.2);
-      curY = lerp(curY, mouseY, 0.2);
-
-      const targetScale = clicking ? 0.9 : hovering ? 1.4 : 1;
-      curScale = lerp(curScale, targetScale, 0.15);
-      glowOpacity = lerp(glowOpacity, isIdle ? 0.4 : 1, 0.04);
-
-      el.style.transform = `translate(${curX - 4}px, ${curY - 4}px) scale(${curScale})`;
-      el.style.opacity = `${glowOpacity}`;
-
-      const glowIntensity = hovering ? 1.6 : 1;
-      el.style.boxShadow = `0 0 ${12 * glowIntensity}px rgba(100,150,255,${0.25 * glowIntensity}), 0 0 ${24 * glowIntensity}px rgba(100,150,255,${0.15 * glowIntensity})`;
-
-      raf = requestAnimationFrame(tick);
-    };
-
-    document.addEventListener("mousemove", onMove);
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("mouseup", onUp);
-    document.addEventListener("mouseenter", onEnter);
-    document.addEventListener("mouseleave", onLeave);
-    resetIdle();
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      document.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("mouseup", onUp);
-      document.removeEventListener("mouseenter", onEnter);
-      document.removeEventListener("mouseleave", onLeave);
-      clearTimeout(idleTimer);
-      cancelAnimationFrame(raf);
-    };
+    if (Math.random() < 0.08) setBuildingText("The cycle continues");
   }, []);
 
   /* ── Tilt + brightness crossfade + depth + magnetic block ── */
@@ -247,21 +173,6 @@ export default function Hero() {
 
   return (
     <section id="home" ref={sectionRef} className="relative h-screen overflow-hidden bg-bg cursor-none touch-auto">
-
-      {/* ═══ CUSTOM CURSOR ═══ */}
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 z-[9998] pointer-events-none"
-        style={{
-          width: 8, height: 8,
-          borderRadius: "50%",
-          backgroundColor: "rgba(140,170,255,0.85)",
-          boxShadow: "0 0 12px rgba(100,150,255,0.25), 0 0 24px rgba(100,150,255,0.15)",
-          opacity: 0,
-          mixBlendMode: "screen",
-          willChange: "transform",
-        }}
-      />
 
       {/* ═══ ENVIRONMENT ═══ */}
       <div className="absolute inset-0 pointer-events-none">
@@ -455,7 +366,7 @@ export default function Hero() {
         )}
 
         {/* Bottom bar — pinned to bottom */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-20 lg:px-28 pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
+        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-10 pb-6 md:pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
           <NowPlaying />
           <p className="text-[10px] font-mono text-white/12 tracking-wider">
             {buildingText}<span className="text-white/20">.</span>
