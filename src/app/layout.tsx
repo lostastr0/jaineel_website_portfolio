@@ -3,7 +3,10 @@ import { Geist, Geist_Mono, Syne } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import CustomCursor from "@/components/CustomCursor";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark';}document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='dark';}})();`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +27,7 @@ const syne = Syne({
 export const metadata: Metadata = {
   metadataBase: new URL("https://jaineel.dev"),
   title: {
-    default: "Jaineel Khatri — Builder · Brisbane",
+    default: "Jaineel Khatri — Portfolio",
     template: "%s · Jaineel Khatri",
   },
   description:
@@ -45,7 +48,7 @@ export const metadata: Metadata = {
   creator: "Jaineel Khatri",
   applicationName: "Jaineel Khatri — Portfolio",
   openGraph: {
-    title: "Jaineel Khatri — Builder · Brisbane",
+    title: "Jaineel Khatri — Portfolio",
     description:
       "Brisbane-based student building toward a career in software engineering and security. Shipping full-stack web, systems tooling, and security projects.",
     url: "https://jaineel.dev",
@@ -55,7 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaineel Khatri — Builder · Brisbane",
+    title: "Jaineel Khatri — Portfolio",
     description:
       "Brisbane-based student building toward a career in software engineering and security.",
   },
@@ -72,8 +75,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050508",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#050508" },
+    { media: "(prefers-color-scheme: light)", color: "#F7F6F3" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -113,8 +119,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -123,8 +130,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} font-sans antialiased bg-bg text-text-primary`}
       >
-        <CustomCursor />
-        {children}
+        <ThemeProvider>
+          <CustomCursor />
+          {children}
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

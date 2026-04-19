@@ -78,8 +78,8 @@ const ease = [0.16, 1, 0.3, 1] as const;
 function TechPill({ name }: { name: string }) {
   return (
     <span
-      className="px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[11px] font-medium tracking-wide text-white/55"
-      style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)" }}
+      className="px-3.5 py-1.5 rounded-full border border-fg/10 bg-fg/4 text-[11px] font-medium tracking-wide text-fg/55"
+      style={{ boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.03)" }}
     >
       {name}
     </span>
@@ -159,25 +159,25 @@ function ProjectBlock({
         ref={cardRef}
         className="group relative rounded-2xl border overflow-hidden"
         style={{
-          borderColor: "rgba(255,255,255,0.09)",
+          borderColor: "rgba(var(--fg-rgb),0.09)",
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.018) 100%)",
+            "linear-gradient(135deg, rgba(var(--fg-rgb),0.04) 0%, rgba(var(--fg-rgb),0.018) 100%)",
           boxShadow:
-            "0 4px 50px rgba(0,0,0,0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(255,255,255,0.05)",
+            "0 4px 50px rgba(var(--shadow-rgb),0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(var(--fg-rgb),0.05)",
           transition:
             "box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.boxShadow =
-            `0 24px 90px rgba(0,0,0,0.5), 0 0 80px rgba(${project.accentColor},0.14), 0 0 0 1px rgba(${project.accentColor},0.08), inset 0 1px 0 rgba(255,255,255,0.08)`;
+            `0 24px 90px rgba(var(--shadow-rgb),0.5), 0 0 80px rgba(${project.accentColor},0.14), 0 0 0 1px rgba(${project.accentColor},0.08), inset 0 1px 0 rgba(var(--fg-rgb),0.08)`;
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(255,255,255,0.20)";
+            "rgba(var(--fg-rgb),0.20)";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.boxShadow =
-            "0 4px 50px rgba(0,0,0,0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(255,255,255,0.05)";
+            "0 4px 50px rgba(var(--shadow-rgb),0.28), 0 0 40px rgba(37,99,235,0.035), inset 0 1px 0 rgba(var(--fg-rgb),0.05)";
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(255,255,255,0.09)";
+            "rgba(var(--fg-rgb),0.09)";
         }}
       >
         {/* Mouse-tracking glow */}
@@ -209,21 +209,21 @@ function ProjectBlock({
           >
             <div className="absolute inset-0 flex items-center justify-center p-10">
               <div
-                className="w-full max-w-75 rounded-lg border border-white/7 group-hover:border-white/12 transition-all duration-500"
+                className="w-full max-w-75 rounded-lg border border-fg/7 group-hover:border-fg/12 transition-all duration-500"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%)",
+                    "linear-gradient(135deg, rgba(var(--fg-rgb),0.04) 0%, rgba(var(--fg-rgb),0.015) 100%)",
                   boxShadow:
-                    "0 12px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)",
+                    "0 12px 40px rgba(var(--shadow-rgb),0.3), inset 0 1px 0 rgba(var(--fg-rgb),0.04)",
                 }}
               >
                 {/* Window chrome */}
-                <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/6">
-                  <span className="w-2 h-2 rounded-full bg-white/12" />
-                  <span className="w-2 h-2 rounded-full bg-white/8" />
-                  <span className="w-2 h-2 rounded-full bg-white/8" />
+                <div className="flex items-center gap-1.5 px-4 py-3 border-b border-fg/6">
+                  <span className="w-2 h-2 rounded-full bg-fg/12" />
+                  <span className="w-2 h-2 rounded-full bg-fg/8" />
+                  <span className="w-2 h-2 rounded-full bg-fg/8" />
                   {project.variant === "terminal" && (
-                    <span className="ml-auto text-[9px] font-mono tracking-[0.15em] text-white/20 uppercase">
+                    <span className="ml-auto text-[9px] font-mono tracking-[0.15em] text-fg/20 uppercase">
                       recon
                     </span>
                   )}
@@ -235,26 +235,26 @@ function ProjectBlock({
                     className="px-4 py-4 font-mono text-[10px] leading-relaxed"
                     style={{ textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
                   >
-                    <div className="flex gap-2 text-white/55">
+                    <div className="flex gap-2 text-fg/55">
                       <span className="text-accent/80 select-none">&gt;</span>
                       <span>scanning ports...</span>
                     </div>
-                    <div className="flex gap-2 text-white/70">
+                    <div className="flex gap-2 text-fg/70">
                       <span className="text-emerald-400/85 select-none">[+]</span>
                       <span>port 22 open</span>
                     </div>
-                    <div className="flex gap-2 text-white/70">
+                    <div className="flex gap-2 text-fg/70">
                       <span className="text-emerald-400/85 select-none">[+]</span>
                       <span>port 80 open</span>
                     </div>
-                    <div className="flex gap-2 text-white/70">
+                    <div className="flex gap-2 text-fg/70">
                       <span className="text-emerald-400/85 select-none">[+]</span>
                       <span>fingerprint collected</span>
                     </div>
-                    <div className="flex gap-2 text-white/50 mt-1 items-center">
+                    <div className="flex gap-2 text-fg/50 mt-1 items-center">
                       <span className="text-accent/80 select-none">&gt;</span>
                       <span
-                        className="inline-block w-1.5 h-3 bg-white/55"
+                        className="inline-block w-1.5 h-3 bg-fg/55"
                         style={{ animation: "preloader-dot-pulse 1s ease-in-out infinite" }}
                       />
                     </div>
@@ -262,10 +262,10 @@ function ProjectBlock({
                 ) : (
                   /* UI placeholder lines */
                   <div className="px-4 py-5 space-y-3">
-                    <div className="h-1.5 w-[45%] rounded-full bg-white/7" />
-                    <div className="h-1.5 w-[70%] rounded-full bg-white/5" />
-                    <div className="h-1.5 w-[55%] rounded-full bg-white/4" />
-                    <div className="h-1.5 w-[35%] rounded-full bg-white/3" />
+                    <div className="h-1.5 w-[45%] rounded-full bg-fg/7" />
+                    <div className="h-1.5 w-[70%] rounded-full bg-fg/5" />
+                    <div className="h-1.5 w-[55%] rounded-full bg-fg/4" />
+                    <div className="h-1.5 w-[35%] rounded-full bg-fg/3" />
                   </div>
                 )}
               </div>
@@ -277,26 +277,26 @@ function ProjectBlock({
             className="flex-1 flex flex-col justify-center px-5 py-8 md:px-12 md:py-14"
           >
             {/* Project number */}
-            <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/20 mb-4">
+            <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-fg/20 mb-4">
               {String(index + 1).padStart(2, "0")}
             </span>
 
             {/* Title */}
             <h3
-              className="text-[clamp(1.6rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] text-white/95 mb-2"
+              className="text-[clamp(1.6rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] text-fg/95 mb-2"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {project.title}
             </h3>
 
             {/* Description */}
-            <p className="text-[14px] text-white/40 leading-relaxed mb-5 max-w-md">
+            <p className="text-[14px] text-fg/40 leading-relaxed mb-5 max-w-md">
               {project.description}
             </p>
 
             {/* Key features — compact inline, only when provided */}
             {project.features && project.features.length > 0 && (
-              <p className="text-[11px] font-mono tracking-[0.02em] text-white/30 leading-relaxed mb-7 max-w-md">
+              <p className="text-[11px] font-mono tracking-[0.02em] text-fg/30 leading-relaxed mb-7 max-w-md">
                 {project.features.join("  \u00b7  ")}
               </p>
             )}
@@ -313,25 +313,25 @@ function ProjectBlock({
               {project.liveUrl && !project.liveDisabled && (
                 <a
                   href={project.liveUrl}
-                  className="group/btn inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-white/12 hover:border-white/25 bg-white/4 hover:bg-white/8 transition-all duration-300"
+                  className="group/btn inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-fg/12 hover:border-fg/25 bg-fg/4 hover:bg-fg/8 transition-all duration-300"
                   style={{
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
+                    boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.04)",
                     transition: "box-shadow 0.4s ease, background 0.3s ease, border-color 0.3s ease",
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow =
-                      "0 0 24px 3px rgba(37,99,235,0.15), 0 0 48px 6px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.06)";
+                      "0 0 24px 3px rgba(37,99,235,0.15), 0 0 48px 6px rgba(37,99,235,0.08), inset 0 1px 0 rgba(var(--fg-rgb),0.06)";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow =
-                      "inset 0 1px 0 rgba(255,255,255,0.04)";
+                      "inset 0 1px 0 rgba(var(--fg-rgb),0.04)";
                   }}
                 >
-                  <span className="text-[13px] font-medium tracking-wide text-white/65 group-hover/btn:text-white/95 transition-colors duration-300">
+                  <span className="text-[13px] font-medium tracking-wide text-fg/65 group-hover/btn:text-fg/95 transition-colors duration-300">
                     {project.liveLabel ?? "View project"}
                   </span>
                   <svg
-                    className="w-3.5 h-3.5 text-white/30 group-hover/btn:text-white/70 transition-colors duration-300"
+                    className="w-3.5 h-3.5 text-fg/30 group-hover/btn:text-fg/70 transition-colors duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -347,8 +347,8 @@ function ProjectBlock({
               )}
               {project.liveDisabled && project.liveLabel && (
                 <div
-                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-white/8 bg-white/2 cursor-default select-none"
-                  style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)" }}
+                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-fg/8 bg-fg/2 cursor-default select-none"
+                  style={{ boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.03)" }}
                   aria-disabled="true"
                 >
                   <span className="relative flex h-1.5 w-1.5">
@@ -361,7 +361,7 @@ function ProjectBlock({
                       style={{ boxShadow: "0 0 6px rgba(52,211,153,0.4)" }}
                     />
                   </span>
-                  <span className="text-[12px] font-mono tracking-[0.06em] text-white/55">
+                  <span className="text-[12px] font-mono tracking-[0.06em] text-fg/55">
                     {project.liveLabel}
                   </span>
                 </div>
@@ -371,25 +371,25 @@ function ProjectBlock({
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/btn inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/8 hover:border-white/18 bg-white/2 hover:bg-white/5 transition-all duration-300"
+                  className="group/btn inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-fg/8 hover:border-fg/18 bg-fg/2 hover:bg-fg/5 transition-all duration-300"
                   style={{
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.02)",
+                    boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.02)",
                     transition: "box-shadow 0.4s ease, background 0.3s ease, border-color 0.3s ease",
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow =
-                      "0 0 16px 2px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.04)";
+                      "0 0 16px 2px rgba(37,99,235,0.08), inset 0 1px 0 rgba(var(--fg-rgb),0.04)";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow =
-                      "inset 0 1px 0 rgba(255,255,255,0.02)";
+                      "inset 0 1px 0 rgba(var(--fg-rgb),0.02)";
                   }}
                 >
-                  <span className="text-[12px] tracking-wide text-white/45 group-hover/btn:text-white/80 transition-colors duration-300">
+                  <span className="text-[12px] tracking-wide text-fg/45 group-hover/btn:text-fg/80 transition-colors duration-300">
                     GitHub
                   </span>
                   <svg
-                    className="w-3 h-3 text-white/20 group-hover/btn:text-white/55 transition-colors duration-300"
+                    className="w-3 h-3 text-fg/20 group-hover/btn:text-fg/55 transition-colors duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -471,7 +471,7 @@ export default function Projects() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 20%, rgba(5,5,8,0.5) 100%)",
+              "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 20%, rgba(var(--bg-rgb),0.5) 100%)",
           }}
         />
       </div>
@@ -489,7 +489,7 @@ export default function Projects() {
         {/* Section header */}
         <div className="text-center mb-20">
           <motion.p
-            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/35 mb-3"
+            className="text-[11px] font-mono tracking-[0.3em] uppercase text-fg/35 mb-3"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -498,7 +498,7 @@ export default function Projects() {
             Selected
           </motion.p>
           <motion.h2
-            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-fg/90"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -508,7 +508,7 @@ export default function Projects() {
             Work
           </motion.h2>
           <motion.p
-            className="mt-4 text-[14px] text-white/35 max-w-sm mx-auto leading-relaxed"
+            className="mt-4 text-[14px] text-fg/35 max-w-sm mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -527,7 +527,7 @@ export default function Projects() {
 
         {/* Coming soon footer */}
         <motion.p
-          className="text-center mt-20 text-[12px] font-mono tracking-[0.2em] text-white/20"
+          className="text-center mt-20 text-[12px] font-mono tracking-[0.2em] text-fg/20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}

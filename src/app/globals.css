@@ -1,16 +1,84 @@
 @import "tailwindcss";
 
+/* ═══ Theme tokens — dark (default) ═══ */
+:root,
+html[data-theme="dark"] {
+  --bg: #050508;
+  --bg-surface: #0C0C12;
+  --bg-surface-hover: #14141E;
+  --border: #1A1A28;
+  --border-bright: #2A2A3E;
+  --text-primary: #EEEEF0;
+  --text-secondary: #7A7A90;
+  --text-muted: #3A3A50;
+
+  /* RGB triplets — let rgba() invert with theme */
+  --bg-rgb: 5, 5, 8;
+  --surface-rgb: 12, 12, 18;
+  --fg-rgb: 255, 255, 255;
+  --accent-rgb: 37, 99, 235;
+  --shadow-rgb: 0, 0, 0;
+
+  /* Semantic depth tokens */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 16px 60px rgba(0, 0, 0, 0.5);
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --vignette-edge: rgba(5, 5, 8, 0.6);
+
+  /* Cursor */
+  --cursor-rgb: 140, 170, 255;
+  --cursor-blend: screen;
+}
+
+/* ═══ Theme tokens — light ═══ */
+html[data-theme="light"] {
+  --bg: #F7F6F3;
+  --bg-surface: #EFEEEA;
+  --bg-surface-hover: #E6E5E0;
+  --border: #DEDDD7;
+  --border-bright: #C5C4BD;
+  --text-primary: #18181D;
+  --text-secondary: #5A5A66;
+  --text-muted: #9C9CA6;
+
+  --bg-rgb: 247, 246, 243;
+  --surface-rgb: 239, 238, 234;
+  --fg-rgb: 24, 24, 29;
+  --accent-rgb: 29, 78, 216;
+  --shadow-rgb: 24, 24, 35;
+
+  /* Light-mode glass — slight white wash for premium frosted feel */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(24, 24, 29, 0.10);
+  --glass-border-strong: rgba(24, 24, 29, 0.20);
+  --shadow-card: 0 4px 16px rgba(24, 24, 35, 0.06), 0 1px 3px rgba(24, 24, 35, 0.04);
+  --shadow-card-hover: 0 18px 50px rgba(24, 24, 35, 0.12), 0 2px 8px rgba(24, 24, 35, 0.06);
+  --shadow-soft: 0 8px 24px rgba(24, 24, 35, 0.06);
+  --vignette-edge: rgba(220, 218, 210, 0.6);
+
+  --cursor-rgb: 24, 24, 29;
+  --cursor-blend: normal;
+}
+
 @theme inline {
-  --color-bg: #050508;
-  --color-bg-surface: #0C0C12;
-  --color-bg-surface-hover: #14141E;
-  --color-border: #1A1A28;
-  --color-border-bright: #2A2A3E;
-  --color-text-primary: #EEEEF0;
-  --color-text-secondary: #7A7A90;
-  --color-text-muted: #3A3A50;
-  --color-accent: #2563EB;
+  --color-bg: var(--bg);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-border: var(--border);
+  --color-border-bright: var(--border-bright);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: rgb(var(--accent-rgb));
   --color-accent-hover: #3B82F6;
+
+  /* Theme-aware foreground / surface colors — work with /opacity modifiers */
+  --color-fg: rgb(var(--fg-rgb));
+  --color-bgs: rgb(var(--bg-rgb));
+  --color-surf: rgb(var(--surface-rgb));
 
   --font-sans: "Geist", system-ui, -apple-system, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
@@ -19,9 +87,10 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
+  background-color: var(--bg);
+  color: var(--text-primary);
   cursor: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 *, *::before, *::after {
@@ -37,19 +106,20 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-bg);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-text-muted); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
 
 ::selection {
-  background-color: rgba(37, 99, 235, 0.25);
-  color: var(--color-text-primary);
+  background-color: rgb(var(--accent-rgb) / 0.25);
+  color: var(--text-primary);
 }
 
 /* ═══ Environment orbs ═══ */
@@ -75,9 +145,6 @@ body {
 .env-drift-a { animation: drift-a 18s ease-in-out infinite; }
 .env-drift-b { animation: drift-b 22s ease-in-out infinite; }
 
-/* ═══ Hero name typography ═══ */
-/* Styles applied directly via inline styles on the elements */
-
 /* ═══ Hover glint — sweeps across first name on hover ═══ */
 .hero-glint-wrap {
   position: relative;
@@ -101,11 +168,11 @@ body {
   background: linear-gradient(
     105deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.04) 30%,
-    rgba(255, 255, 255, 0.10) 45%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.10) 55%,
-    rgba(255, 255, 255, 0.04) 70%,
+    rgba(var(--fg-rgb), 0.04) 30%,
+    rgba(var(--fg-rgb), 0.10) 45%,
+    rgba(var(--fg-rgb), 0.18) 50%,
+    rgba(var(--fg-rgb), 0.10) 55%,
+    rgba(var(--fg-rgb), 0.04) 70%,
     transparent 100%
   );
   transition: none;
@@ -155,13 +222,11 @@ body {
 
 
 /* ═══ Hero entrance animations ═══ */
-/* Opacity-only — no transform, so JS tilt has sole control */
 @keyframes hero-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Presence: scale 0.98 → 1.02 → 1 */
 @keyframes hero-presence {
   0% { opacity: 0; transform: scale(0.98); }
   60% { opacity: 1; transform: scale(1.015); }
@@ -220,14 +285,8 @@ body {
 
 /* ═══ Resume toast ═══ */
 @keyframes toast-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+  0% { opacity: 0; transform: scale(0.94); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .resume-toast-enter {
@@ -235,16 +294,8 @@ body {
 }
 
 @keyframes toast-out {
-  0% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.96) translateY(-4px);
-    filter: blur(2px);
-  }
+  0% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); }
+  100% { opacity: 0; transform: scale(0.96) translateY(-4px); filter: blur(2px); }
 }
 
 .resume-toast-exit {

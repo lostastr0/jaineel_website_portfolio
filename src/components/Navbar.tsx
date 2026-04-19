@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Work", href: "#projects" },
@@ -74,11 +75,11 @@ export default function Navbar() {
           backdropFilter: scrolled ? "blur(24px) saturate(150%)" : "blur(4px)",
           WebkitBackdropFilter: scrolled ? "blur(24px) saturate(150%)" : "blur(4px)",
           background: scrolled
-            ? "linear-gradient(180deg, rgba(5,5,8,0.85) 0%, rgba(5,5,8,0.6) 55%, rgba(5,5,8,0) 100%)"
-            : "linear-gradient(180deg, rgba(5,5,8,0.35) 0%, rgba(5,5,8,0) 100%)",
+            ? "linear-gradient(180deg, rgba(var(--bg-rgb),0.85) 0%, rgba(var(--bg-rgb),0.6) 55%, rgba(var(--bg-rgb),0) 100%)"
+            : "linear-gradient(180deg, rgba(var(--bg-rgb),0.35) 0%, rgba(var(--bg-rgb),0) 100%)",
           borderBottom: "1px solid transparent",
           boxShadow: scrolled
-            ? "0 16px 40px -20px rgba(0,0,0,0.55)"
+            ? "0 16px 40px -20px rgba(var(--shadow-rgb),0.55)"
             : "0 0 0 rgba(0,0,0,0)",
         }}
       >
@@ -86,8 +87,10 @@ export default function Navbar() {
         <a
           href="#home"
           onClick={(e) => { e.preventDefault(); handleNavClick("#home"); }}
-          className="absolute left-12 md:left-20 -translate-y-1/2 text-white/80 hover:text-white transition-colors duration-200 flex items-center"
-          style={{ top: "2.25rem" }}
+          className="absolute left-12 md:left-20 -translate-y-1/2 transition-colors duration-200 flex items-center"
+          style={{ top: "2.25rem", color: "rgba(var(--fg-rgb), 0.80)" }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 1)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.80)"; }}
           aria-label="JK home"
         >
           <Logo size={16} />
@@ -100,14 +103,14 @@ export default function Navbar() {
             className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-0.5 px-1.5 py-1 rounded-full backdrop-blur-2xl"
             style={{
               background: scrolled
-                ? "linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.05) 100%)"
-                : "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                ? "linear-gradient(135deg, rgba(var(--fg-rgb),0.09) 0%, rgba(var(--fg-rgb),0.05) 100%)"
+                : "linear-gradient(135deg, rgba(var(--fg-rgb),0.06) 0%, rgba(var(--fg-rgb),0.03) 100%)",
               border: scrolled
-                ? "1px solid rgba(255,255,255,0.12)"
-                : "1px solid rgba(255,255,255,0.08)",
+                ? "1px solid rgba(var(--fg-rgb),0.12)"
+                : "1px solid rgba(var(--fg-rgb),0.08)",
               boxShadow: scrolled
-                ? "0 0 0 0.5px rgba(255,255,255,0.06), 0 4px 16px rgba(0,0,0,0.35), 0 12px 40px rgba(0,0,0,0.2), inset 0 0.5px 0 rgba(255,255,255,0.12)"
-                : "0 0 0 0.5px rgba(255,255,255,0.04), 0 2px 8px rgba(0,0,0,0.2), 0 8px 32px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.10)",
+                ? "0 0 0 0.5px rgba(var(--fg-rgb),0.06), 0 4px 16px rgba(var(--shadow-rgb),0.35), 0 12px 40px rgba(var(--shadow-rgb),0.2), inset 0 0.5px 0 rgba(var(--fg-rgb),0.12)"
+                : "0 0 0 0.5px rgba(var(--fg-rgb),0.04), 0 2px 8px rgba(var(--shadow-rgb),0.2), 0 8px 32px rgba(var(--shadow-rgb),0.12), inset 0 0.5px 0 rgba(var(--fg-rgb),0.10)",
               transition: "background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
             }}
           >
@@ -120,21 +123,21 @@ export default function Navbar() {
                   onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                   className="relative px-5 py-2 text-[11px] rounded-full transition-all duration-300 tracking-[0.06em] uppercase"
                   style={{
-                    color: isActive ? "rgba(255,255,255,0.90)" : "rgba(255,255,255,0.40)",
-                    background: isActive ? "rgba(255,255,255,0.07)" : "transparent",
-                    boxShadow: isActive ? "inset 0 0.5px 0 rgba(255,255,255,0.08)" : "none",
+                    color: isActive ? "rgba(var(--fg-rgb),0.90)" : "rgba(var(--fg-rgb),0.40)",
+                    background: isActive ? "rgba(var(--fg-rgb),0.07)" : "transparent",
+                    boxShadow: isActive ? "inset 0 0.5px 0 rgba(var(--fg-rgb),0.08)" : "none",
                     transition: "color 0.3s, background 0.3s, box-shadow 0.3s",
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                      e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+                      e.currentTarget.style.background = "rgba(var(--fg-rgb),0.05)";
+                      e.currentTarget.style.color = "rgba(var(--fg-rgb),0.85)";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
                       e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "rgba(255,255,255,0.40)";
+                      e.currentTarget.style.color = "rgba(var(--fg-rgb),0.40)";
                     }
                   }}
                 >
@@ -144,14 +147,28 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right — mobile toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden absolute right-6 top-1/2 -translate-y-1/2 text-[11px] tracking-widest text-white/35 hover:text-white/70 uppercase transition-colors duration-200"
-            aria-label="Toggle menu"
+          {/* Right — theme toggle (desktop) */}
+          <div
+            className="hidden md:flex absolute -translate-y-1/2 items-center"
+            style={{ right: "5rem", top: "2.25rem" }}
           >
-            {mobileMenuOpen ? "Close" : "Menu"}
-          </button>
+            <ThemeToggle />
+          </div>
+
+          {/* Right — mobile controls */}
+          <div className="md:hidden absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-3">
+            <ThemeToggle compact />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-[11px] tracking-widest uppercase transition-colors duration-200"
+              style={{ color: "rgba(var(--fg-rgb), 0.35)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.70)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.35)"; }}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? "Close" : "Menu"}
+            </button>
+          </div>
 
         </div>
 
@@ -172,11 +189,11 @@ export default function Navbar() {
             <div
               className="inline-flex items-center gap-2 h-7 px-3.5 rounded-full"
               style={{
-                background: scrolled ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
-                border: scrolled ? "1px solid rgba(255,255,255,0.11)" : "1px solid rgba(255,255,255,0.08)",
+                background: scrolled ? "rgba(var(--fg-rgb),0.06)" : "rgba(var(--fg-rgb),0.04)",
+                border: scrolled ? "1px solid rgba(var(--fg-rgb),0.11)" : "1px solid rgba(var(--fg-rgb),0.08)",
                 boxShadow: scrolled
-                  ? "inset 0 0.5px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.15)"
-                  : "inset 0 0.5px 0 rgba(255,255,255,0.06)",
+                  ? "inset 0 0.5px 0 rgba(var(--fg-rgb),0.08), 0 2px 8px rgba(var(--shadow-rgb),0.15)"
+                  : "inset 0 0.5px 0 rgba(var(--fg-rgb),0.06)",
                 transition: "background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
               }}
             >
@@ -189,7 +206,7 @@ export default function Navbar() {
                 style={{
                   lineHeight: 1,
                   transform: "translateY(0.5px)",
-                  color: scrolled ? "rgba(255,255,255,0.62)" : "rgba(255,255,255,0.52)",
+                  color: scrolled ? "rgba(var(--fg-rgb),0.62)" : "rgba(var(--fg-rgb),0.52)",
                   transition: "color 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
@@ -201,8 +218,8 @@ export default function Navbar() {
             <div
               className="inline-flex items-center justify-center h-7 px-3 rounded-full"
               style={{
-                background: scrolled ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
-                border: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0.05)",
+                background: scrolled ? "rgba(var(--fg-rgb),0.04)" : "rgba(var(--fg-rgb),0.02)",
+                border: scrolled ? "1px solid rgba(var(--fg-rgb),0.08)" : "1px solid rgba(var(--fg-rgb),0.05)",
                 transition: "background 0.4s ease, border-color 0.4s ease",
               }}
             >
@@ -211,7 +228,7 @@ export default function Navbar() {
                 style={{
                   lineHeight: 1,
                   transform: "translateY(0.5px)",
-                  color: scrolled ? "rgba(255,255,255,0.40)" : "rgba(255,255,255,0.32)",
+                  color: scrolled ? "rgba(var(--fg-rgb),0.40)" : "rgba(var(--fg-rgb),0.32)",
                   transition: "color 0.4s ease",
                 }}
               >
@@ -223,8 +240,8 @@ export default function Navbar() {
             <div
               className="inline-flex items-center justify-center h-7 px-3 rounded-full"
               style={{
-                background: scrolled ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
-                border: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0.05)",
+                background: scrolled ? "rgba(var(--fg-rgb),0.04)" : "rgba(var(--fg-rgb),0.02)",
+                border: scrolled ? "1px solid rgba(var(--fg-rgb),0.08)" : "1px solid rgba(var(--fg-rgb),0.05)",
                 transition: "background 0.4s ease, border-color 0.4s ease",
               }}
             >
@@ -233,7 +250,7 @@ export default function Navbar() {
                 style={{
                   lineHeight: 1,
                   transform: "translateY(0.5px)",
-                  color: scrolled ? "rgba(255,255,255,0.40)" : "rgba(255,255,255,0.32)",
+                  color: scrolled ? "rgba(var(--fg-rgb),0.40)" : "rgba(var(--fg-rgb),0.32)",
                   transition: "color 0.4s ease",
                 }}
               >
@@ -246,15 +263,23 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-y-auto mobile-menu-drop">
+        <div className="md:hidden fixed inset-0 z-40 backdrop-blur-2xl flex flex-col items-center justify-center overflow-y-auto mobile-menu-drop"
+          style={{ background: "rgba(var(--bg-rgb), 0.95)" }}
+        >
           <nav className="flex flex-col items-center gap-2">
             {NAV_ITEMS.map((item, i) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
-                className="text-2xl font-semibold tracking-tight text-white/40 hover:text-white transition-colors py-3 px-8 mobile-menu-item"
-                style={{ fontFamily: "var(--font-display)", animationDelay: `${80 + i * 50}ms` }}
+                className="text-2xl font-semibold tracking-tight transition-colors py-3 px-8 mobile-menu-item"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  animationDelay: `${80 + i * 50}ms`,
+                  color: "rgba(var(--fg-rgb), 0.40)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 1)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.40)"; }}
               >
                 {item.label}
               </a>

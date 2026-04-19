@@ -90,23 +90,23 @@ function SkillPill({
           scale: isActive ? 1.03 : 1,
           y: isActive ? -2 : 0,
           borderColor: isActive
-            ? "rgba(255,255,255,0.22)"
-            : "rgba(255,255,255,0.10)",
+            ? "rgba(var(--fg-rgb),0.22)"
+            : "rgba(var(--fg-rgb),0.10)",
           backgroundColor: isActive
-            ? "rgba(255,255,255,0.08)"
-            : "rgba(255,255,255,0.04)",
+            ? "rgba(var(--fg-rgb),0.08)"
+            : "rgba(var(--fg-rgb),0.04)",
           opacity: isDimmed ? 0.48 : 1,
         }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         style={{
           boxShadow: isActive
-            ? "0 4px 20px rgba(0,0,0,0.3), 0 0 16px rgba(37,99,235,0.10), inset 0 1px 0 rgba(255,255,255,0.06)"
-            : "0 2px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+            ? "0 4px 20px rgba(var(--shadow-rgb),0.3), 0 0 16px rgba(37,99,235,0.10), inset 0 1px 0 rgba(var(--fg-rgb),0.06)"
+            : "0 2px 16px rgba(var(--shadow-rgb),0.25), inset 0 1px 0 rgba(var(--fg-rgb),0.04)",
         }}
       >
         <span
           className="text-[13px] font-medium tracking-wide transition-colors duration-300"
-          style={{ color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.78)" }}
+          style={{ color: isActive ? "rgba(var(--fg-rgb),0.98)" : "rgba(var(--fg-rgb),0.78)" }}
         >
           {name}
         </span>
@@ -189,7 +189,7 @@ export default function Skills() {
             width: "70%",
             height: "55%",
             background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.015) 0%, transparent 60%)",
+              "radial-gradient(ellipse at center, rgba(var(--fg-rgb),0.015) 0%, transparent 60%)",
             filter: "blur(40px)",
           }}
         />
@@ -198,7 +198,7 @@ export default function Skills() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(5,5,8,0.5) 100%)",
+              "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(var(--bg-rgb),0.5) 100%)",
           }}
         />
       </div>
@@ -216,7 +216,7 @@ export default function Skills() {
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.p
-            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/30 mb-3"
+            className="text-[11px] font-mono tracking-[0.3em] uppercase text-fg/30 mb-3"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -225,7 +225,7 @@ export default function Skills() {
             System
           </motion.p>
           <motion.h2
-            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/95"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-fg/95"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -235,7 +235,7 @@ export default function Skills() {
             Stack
           </motion.h2>
           <motion.p
-            className="mt-4 text-[14px] text-white/35 max-w-sm mx-auto leading-relaxed"
+            className="mt-4 text-[14px] text-fg/35 max-w-sm mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -250,7 +250,7 @@ export default function Skills() {
           {SKILLS_GROUPS.map((group) => (
             <div key={group.label}>
               <motion.p
-                className="text-[11px] font-mono tracking-[0.22em] uppercase text-white/35 mb-3.5 text-center"
+                className="text-[11px] font-mono tracking-[0.22em] uppercase text-fg/35 mb-3.5 text-center"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.5 }}
@@ -280,9 +280,9 @@ export default function Skills() {
         </div>
 
         {/* Currently exploring — aspirational row, visually distinct */}
-        <div className="mt-14 pt-10 border-t border-white/5">
+        <div className="mt-14 pt-10 border-t border-fg/5">
           <motion.p
-            className="text-[11px] font-mono tracking-[0.22em] uppercase text-white/25 mb-3.5 text-center"
+            className="text-[11px] font-mono tracking-[0.22em] uppercase text-fg/25 mb-3.5 text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -309,12 +309,12 @@ export default function Skills() {
                     className="relative px-4 py-1.5 rounded-full border border-dashed backdrop-blur-md transition-all duration-300"
                     animate={{
                       scale: isActive ? 1.03 : 1,
-                      borderColor: isActive ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.08)",
+                      borderColor: isActive ? "rgba(var(--fg-rgb),0.16)" : "rgba(var(--fg-rgb),0.08)",
                       opacity: isDimmed ? 0.35 : 0.7,
                     }}
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <span className="text-[11px] font-mono tracking-[0.08em] text-white/55">
+                    <span className="text-[11px] font-mono tracking-[0.08em] text-fg/55">
                       {item.name}
                     </span>
                   </motion.div>
@@ -336,11 +336,11 @@ export default function Skills() {
                 exit={{ opacity: 0, y: -6, filter: "blur(3px)" }}
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span className="text-[14px] font-medium text-white/95 tracking-wide">
+                <span className="text-[14px] font-medium text-fg/95 tracking-wide">
                   {hovered.name}
                 </span>
-                <span className="w-5 h-px bg-white/20" />
-                <span className="text-[12px] font-mono text-white/40 tracking-[0.08em]">
+                <span className="w-5 h-px bg-fg/20" />
+                <span className="text-[12px] font-mono text-fg/40 tracking-[0.08em]">
                   {hovered.desc}
                 </span>
               </motion.div>

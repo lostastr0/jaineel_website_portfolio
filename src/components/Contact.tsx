@@ -81,10 +81,10 @@ function CTAContainer({ children }: { children: React.ReactNode }) {
     >
       <motion.div
         ref={containerRef}
-        className="relative rounded-2xl border border-white/10 backdrop-blur-sm px-5 py-8 md:px-10 md:py-12 text-center overflow-hidden"
+        className="relative rounded-2xl border border-fg/10 backdrop-blur-sm px-5 py-8 md:px-10 md:py-12 text-center overflow-hidden"
         style={{
-          background: "rgba(255,255,255,0.03)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 32px rgba(0,0,0,0.25), 0 0 60px rgba(37,99,235,0.06)",
+          background: "rgba(var(--fg-rgb),0.03)",
+          boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.05), 0 4px 32px rgba(var(--shadow-rgb),0.25), 0 0 60px rgba(37,99,235,0.06)",
         }}
         animate={{
           y: [0, -6, 0],
@@ -192,7 +192,7 @@ export default function Contact() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 60% 55% at 50% 55%, transparent 10%, rgba(5,5,8,0.6) 100%)",
+              "radial-gradient(ellipse 60% 55% at 50% 55%, transparent 10%, rgba(var(--bg-rgb),0.6) 100%)",
           }}
         />
       </div>
@@ -209,7 +209,7 @@ export default function Contact() {
       >
         {/* Label */}
         <motion.p
-          className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/30 mb-3"
+          className="text-[11px] font-mono tracking-[0.3em] uppercase text-fg/30 mb-3"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -220,7 +220,7 @@ export default function Contact() {
 
         {/* Headline */}
         <motion.h2
-          className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+          className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-fg/90"
           style={{ fontFamily: "var(--font-display)" }}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -232,7 +232,7 @@ export default function Contact() {
 
         {/* Subtitle */}
         <motion.p
-          className="mt-4 text-[14px] text-white/35 leading-relaxed max-w-sm mx-auto"
+          className="mt-4 text-[14px] text-fg/35 leading-relaxed max-w-sm mx-auto"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -243,7 +243,7 @@ export default function Contact() {
 
         {/* Personality line */}
         <motion.p
-          className="mt-2 text-[12px] font-mono tracking-[0.04em] text-white/25 italic"
+          className="mt-2 text-[12px] font-mono tracking-[0.04em] text-fg/25 italic"
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -272,7 +272,7 @@ export default function Contact() {
               }}
             />
           </span>
-          <span className="text-[12px] tracking-[0.12em] text-white/55">
+          <span className="text-[12px] tracking-[0.12em] text-fg/55">
             Available for work
           </span>
         </motion.div>
@@ -283,30 +283,30 @@ export default function Contact() {
             {/* Primary CTA */}
             <a
               href={`mailto:${EMAIL}`}
-              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-white/18 hover:border-white/32 bg-white/6 hover:bg-white/10 transition-all duration-300"
+              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-fg/18 hover:border-fg/32 bg-fg/6 hover:bg-fg/10 transition-all duration-300"
               style={{
                 boxShadow:
-                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(var(--fg-rgb),0.06)",
                 transform: "scale(1.02)",
                 transition:
                   "box-shadow 0.4s ease, background 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1)",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 40px 6px rgba(37,99,235,0.24), 0 0 80px 14px rgba(37,99,235,0.12), inset 0 1px 0 rgba(255,255,255,0.10)";
+                  "0 0 40px 6px rgba(37,99,235,0.24), 0 0 80px 14px rgba(37,99,235,0.12), inset 0 1px 0 rgba(var(--fg-rgb),0.10)";
                 (e.currentTarget as HTMLElement).style.transform = "scale(1.04) translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(255,255,255,0.06)";
+                  "0 0 28px 3px rgba(37,99,235,0.14), inset 0 1px 0 rgba(var(--fg-rgb),0.06)";
                 (e.currentTarget as HTMLElement).style.transform = "scale(1.02)";
               }}
             >
-              <span className="text-[14px] font-medium tracking-wide text-white/85 group-hover:text-white transition-colors duration-300">
+              <span className="text-[14px] font-medium tracking-wide text-fg/85 group-hover:text-fg transition-colors duration-300">
                 Email me
               </span>
               <svg
-                className="w-4 h-4 text-white/35 group-hover:text-white/75 group-hover:translate-x-0.5 transition-all duration-300"
+                className="w-4 h-4 text-fg/35 group-hover:text-fg/75 group-hover:translate-x-0.5 transition-all duration-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -324,10 +324,10 @@ export default function Contact() {
             <button
               type="button"
               onClick={handleCopy}
-              className="group relative mt-5 mx-auto flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-white/5 transition-colors duration-200"
+              className="group relative mt-5 mx-auto flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-fg/5 transition-colors duration-200"
               aria-label="Copy email address"
             >
-              <span className="text-[11px] font-mono tracking-[0.04em] text-white/40 group-hover:text-white/65 transition-colors duration-200">
+              <span className="text-[11px] font-mono tracking-[0.04em] text-fg/40 group-hover:text-fg/65 transition-colors duration-200">
                 {EMAIL}
               </span>
               <span className="relative w-3.5 h-3.5 inline-flex items-center justify-center">
@@ -354,7 +354,7 @@ export default function Contact() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.6 }}
                       transition={{ duration: 0.15 }}
-                      className="w-3.5 h-3.5 text-white/35 group-hover:text-white/65 transition-colors duration-200"
+                      className="w-3.5 h-3.5 text-fg/35 group-hover:text-fg/65 transition-colors duration-200"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -385,7 +385,7 @@ export default function Contact() {
               className="mt-7 mx-auto h-px"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)",
+                  "linear-gradient(90deg, transparent 0%, rgba(var(--fg-rgb),0.08) 50%, transparent 100%)",
               }}
               initial={{ width: "0%" }}
               whileInView={{ width: "60%" }}
@@ -401,10 +401,10 @@ export default function Contact() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative text-[13px] tracking-wide text-white/50 hover:text-white/85 transition-colors duration-300"
+                  className="group relative text-[13px] tracking-wide text-fg/50 hover:text-fg/85 transition-colors duration-300"
                 >
                   {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 group-hover:w-full h-px bg-white/25 transition-all duration-300" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 group-hover:w-full h-px bg-fg/25 transition-all duration-300" />
                 </a>
               ))}
             </div>

@@ -65,7 +65,7 @@ export default function Footer() {
           className="h-px"
           style={{
             background:
-              "linear-gradient(90deg, transparent 5%, rgba(37,99,235,0.07) 30%, rgba(255,255,255,0.12) 50%, rgba(37,99,235,0.07) 70%, transparent 95%)",
+              "linear-gradient(90deg, transparent 5%, rgba(37,99,235,0.07) 30%, rgba(var(--fg-rgb),0.12) 50%, rgba(37,99,235,0.07) 70%, transparent 95%)",
           }}
         />
       </div>
@@ -77,12 +77,12 @@ export default function Footer() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-7">
         <div className="relative flex items-center justify-between max-md:flex-col max-md:gap-4">
           {/* Left — monogram */}
-          <div className="flex items-center group max-md:order-1 cursor-default text-white/45 group-hover:text-white/75 transition-colors duration-300">
+          <div className="flex items-center group max-md:order-1 cursor-default text-fg/45 group-hover:text-fg/75 transition-colors duration-300">
             <Logo size={13} />
           </div>
 
           {/* Center — absolute positioned for true optical centering */}
-          <p className="absolute left-1/2 -translate-x-1/2 text-[11px] font-mono tracking-[0.18em] text-white/30 whitespace-nowrap max-md:static max-md:translate-x-0 max-md:order-3">
+          <p className="absolute left-1/2 -translate-x-1/2 text-[11px] font-mono tracking-[0.18em] text-fg/30 whitespace-nowrap max-md:static max-md:translate-x-0 max-md:order-3">
             {footerLine}
           </p>
 
@@ -91,16 +91,16 @@ export default function Footer() {
             {LINKS.map((link, i) => (
               <span key={link.label} className="flex items-center gap-5">
                 {i > 0 && (
-                  <span className="text-white/10 text-[9px]">&middot;</span>
+                  <span className="text-fg/10 text-[9px]">&middot;</span>
                 )}
                 <a
                   href={link.href}
                   target={link.href.startsWith("mailto") ? undefined : "_blank"}
                   rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                  className="group relative text-[11px] tracking-[0.06em] text-white/32 hover:text-white/65 transition-all duration-300 hover:-translate-y-px"
+                  className="group relative text-[11px] tracking-[0.06em] text-fg/32 hover:text-fg/65 transition-all duration-300 hover:-translate-y-px"
                 >
                   {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 group-hover:w-full h-px bg-white/20 transition-all duration-300 ease-out" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 group-hover:w-full h-px bg-fg/20 transition-all duration-300 ease-out" />
                 </a>
               </span>
             ))}

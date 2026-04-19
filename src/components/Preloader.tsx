@@ -86,7 +86,7 @@ export default function Preloader() {
               animation: "preloader-dot-pulse 1.8s ease-in-out infinite",
             }}
           />
-          <span className="text-[9px] tracking-[0.32em] uppercase text-white/25 select-none">
+          <span className="text-[9px] tracking-[0.32em] uppercase text-fg/25 select-none">
             jk.system &middot; calibrating
           </span>
         </div>
@@ -99,13 +99,13 @@ export default function Preloader() {
           <span
             className="text-[clamp(4rem,9vw,7rem)] font-medium leading-none tracking-[-0.04em]"
             style={{
-              color: "rgba(255,255,255,0.92)",
+              color: "rgba(var(--fg-rgb),0.92)",
               textShadow: "0 0 40px rgba(37,99,235,0.12)",
             }}
           >
             {padded}
           </span>
-          <span className="text-[clamp(1rem,1.8vw,1.4rem)] text-white/30 leading-none font-medium">
+          <span className="text-[clamp(1rem,1.8vw,1.4rem)] text-fg/30 leading-none font-medium">
             %
           </span>
         </div>
@@ -119,13 +119,13 @@ export default function Preloader() {
             animationDelay: "260ms",
           }}
         >
-          <div className="absolute inset-0 bg-white/8" />
+          <div className="absolute inset-0 bg-fg/8" />
           <div
             className="absolute left-0 top-0 bottom-0"
             style={{
               width: `${progress * 100}%`,
               background:
-                "linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(37,99,235,0.7) 50%, rgba(255,255,255,0.4) 100%)",
+                "linear-gradient(90deg, rgba(var(--fg-rgb),0.2) 0%, rgba(37,99,235,0.7) 50%, rgba(var(--fg-rgb),0.4) 100%)",
               boxShadow: "0 0 6px rgba(37,99,235,0.35)",
               transition: "width 70ms linear",
             }}
@@ -156,7 +156,7 @@ export default function Preloader() {
             style={{
               color:
                 progress < 1
-                  ? "rgba(255,255,255,0.20)"
+                  ? "rgba(var(--fg-rgb),0.20)"
                   : "rgba(52,211,153,0.75)",
             }}
           >

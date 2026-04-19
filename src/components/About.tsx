@@ -41,7 +41,7 @@ function InfoRow({
 }) {
   return (
     <motion.div
-      className="group relative flex items-baseline justify-between gap-6 py-3.5 px-3 -mx-3 rounded-lg border-b border-white/6 last:border-b-0 hover:border-white/12 hover:bg-white/5 transition-all duration-300"
+      className="group relative flex items-baseline justify-between gap-6 py-3.5 px-3 -mx-3 rounded-lg border-b border-fg/6 last:border-b-0 hover:border-fg/12 hover:bg-fg/5 transition-all duration-300"
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
@@ -57,14 +57,14 @@ function InfoRow({
             "radial-gradient(ellipse 70% 100% at 0% 50%, rgba(37,99,235,0.08) 0%, transparent 70%)",
         }}
       />
-      <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/35 shrink-0 group-hover:text-white/50 transition-colors duration-300">
+      <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-fg/35 shrink-0 group-hover:text-fg/50 transition-colors duration-300">
         {label}
       </span>
       <span
         className={`text-[14px] text-right leading-relaxed transition-colors duration-300 ${
           accent
-            ? "text-white/80 group-hover:text-white/95"
-            : "text-white/60 group-hover:text-white/80"
+            ? "text-fg/80 group-hover:text-fg/95"
+            : "text-fg/60 group-hover:text-fg/80"
         }`}
       >
         {accent && (
@@ -154,7 +154,7 @@ export default function About() {
             width: "65%",
             height: "50%",
             background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.015) 0%, transparent 55%)",
+              "radial-gradient(ellipse at center, rgba(var(--fg-rgb),0.015) 0%, transparent 55%)",
             filter: "blur(40px)",
           }}
         />
@@ -163,7 +163,7 @@ export default function About() {
           className="absolute inset-0 pointer-events-none opacity-[0.35]"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 4px)",
+              "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(var(--fg-rgb),0.008) 3px, rgba(var(--fg-rgb),0.008) 4px)",
             maskImage:
               "radial-gradient(ellipse 60% 55% at 50% 50%, black 0%, transparent 85%)",
             WebkitMaskImage:
@@ -174,7 +174,7 @@ export default function About() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(5,5,8,0.5) 100%)",
+              "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(var(--bg-rgb),0.5) 100%)",
           }}
         />
       </div>
@@ -192,7 +192,7 @@ export default function About() {
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.p
-            className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/30 mb-3"
+            className="text-[11px] font-mono tracking-[0.3em] uppercase text-fg/30 mb-3"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -201,7 +201,7 @@ export default function About() {
             Profile
           </motion.p>
           <motion.h2
-            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-white/90"
+            className="text-[clamp(1.6rem,4.5vw,3.5rem)] font-bold tracking-[-0.04em] text-fg/90"
             style={{ fontFamily: "var(--font-display)" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -211,7 +211,7 @@ export default function About() {
             About
           </motion.h2>
           <motion.p
-            className="mt-4 text-[14px] text-white/35 max-w-md mx-auto leading-relaxed"
+            className="mt-4 text-[14px] text-fg/35 max-w-md mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -223,10 +223,10 @@ export default function About() {
 
         {/* Content container -- subtle elevation */}
         <div
-          className="rounded-2xl border border-white/5 backdrop-blur-sm px-6 py-8 md:px-10 md:py-10"
+          className="rounded-2xl border border-fg/5 backdrop-blur-sm px-6 py-8 md:px-10 md:py-10"
           style={{
-            background: "rgba(255,255,255,0.02)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
+            background: "rgba(var(--fg-rgb),0.02)",
+            boxShadow: "inset 0 1px 0 rgba(var(--fg-rgb),0.03)",
           }}
         >
           {/* Two-column layout */}
@@ -234,7 +234,7 @@ export default function About() {
             {/* Left -- Identity */}
             <div>
             <motion.p
-              className="text-[10px] font-mono tracking-[0.25em] uppercase text-white/25 mb-2"
+              className="text-[10px] font-mono tracking-[0.25em] uppercase text-fg/25 mb-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -242,7 +242,7 @@ export default function About() {
             >
               Identity
             </motion.p>
-            <div className="border-t border-white/[0.06]">
+            <div className="border-t border-fg/6">
               {IDENTITY.map((item, i) => (
                 <InfoRow
                   key={item.label}
@@ -258,7 +258,7 @@ export default function About() {
           {/* Right -- Details */}
           <div>
             <motion.p
-              className="text-[10px] font-mono tracking-[0.25em] uppercase text-white/25 mb-2"
+              className="text-[10px] font-mono tracking-[0.25em] uppercase text-fg/25 mb-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -266,7 +266,7 @@ export default function About() {
             >
               Details
             </motion.p>
-            <div className="border-t border-white/[0.06]">
+            <div className="border-t border-fg/6">
               {DETAILS.map((item, i) => (
                 <InfoRow
                   key={item.label}
@@ -285,7 +285,7 @@ export default function About() {
           className="mt-12 mb-5 h-px w-full"
           style={{
             background:
-              "linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 95%)",
+              "linear-gradient(90deg, transparent 5%, rgba(var(--fg-rgb),0.06) 30%, rgba(var(--fg-rgb),0.06) 70%, transparent 95%)",
           }}
           initial={{ opacity: 0, scaleX: 0.5 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
@@ -295,7 +295,7 @@ export default function About() {
 
         {/* Bottom line */}
         <motion.p
-          className="text-center text-[12px] font-mono tracking-[0.18em] text-white/30"
+          className="text-center text-[12px] font-mono tracking-[0.18em] text-fg/30"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}

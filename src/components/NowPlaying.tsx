@@ -37,11 +37,11 @@ export default function NowPlaying() {
   return (
     <Wrapper
       {...wrapperProps}
-      className="group relative inline-flex items-center gap-3 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-white/3"
+      className="group relative inline-flex items-center gap-3 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-fg/3"
       style={{
         cursor: data.songUrl ? "pointer" : "default",
-        background: "linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent)",
-        borderBottom: "1px solid rgba(255,255,255,0.04)",
+        background: "linear-gradient(to right, transparent, rgba(var(--fg-rgb),0.05), transparent)",
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.04)",
       }}
     >
       {/* Album art or equalizer */}
@@ -55,7 +55,7 @@ export default function NowPlaying() {
             style={{
               opacity: 0.75,
               filter: "brightness(1.15)",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              boxShadow: "0 4px 12px rgba(var(--shadow-rgb),0.4)",
             }}
           />
           <span className="absolute bottom-0.5 right-0.5 flex items-end gap-px h-3.5">
@@ -66,9 +66,9 @@ export default function NowPlaying() {
         </div>
       ) : (
         <span className="flex items-end gap-0.5 h-3 shrink-0 opacity-30">
-          <span className="w-0.5 h-1.5 bg-white/40 rounded-full" />
-          <span className="w-0.5 h-2.5 bg-white/40 rounded-full" />
-          <span className="w-0.5 h-1 bg-white/40 rounded-full" />
+          <span className="w-0.5 h-1.5 bg-fg/40 rounded-full" />
+          <span className="w-0.5 h-2.5 bg-fg/40 rounded-full" />
+          <span className="w-0.5 h-1 bg-fg/40 rounded-full" />
         </span>
       )}
 
@@ -76,15 +76,15 @@ export default function NowPlaying() {
       <div className="flex flex-col min-w-0">
         {data.isPlaying && data.title ? (
           <div className="flex flex-col gap-0.5">
-            <span className="text-[12px] text-white/75 group-hover:text-white/90 transition-colors duration-300 truncate max-w-48 leading-tight font-medium">
+            <span className="text-[12px] text-fg/75 group-hover:text-fg/90 transition-colors duration-300 truncate max-w-48 leading-tight font-medium">
               {data.title}
             </span>
-            <span className="text-[10px] text-white/40 truncate max-w-48 leading-tight">
+            <span className="text-[10px] text-fg/40 truncate max-w-48 leading-tight">
               {data.artist}
             </span>
           </div>
         ) : (
-          <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-white/30 leading-tight">
+          <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-fg/30 leading-tight">
             Offline
           </span>
         )}

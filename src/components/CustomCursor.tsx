@@ -14,6 +14,37 @@ export default function CustomCursor() {
       return;
     }
 
+    /* Resolve theme-aware cursor color from CSS variables. */
+    const readCursorTokens = () => {
+      const styles = getComputedStyle(document.documentElement);
+      const rgb = styles.getPropertyValue("--cursor-rgb").trim() || "140,170,255";
+      const blend = (styles.getPropertyValue("--cursor-blend").trim() || "screen") as
+        | "screen"
+        | "multiply"
+        | "normal";
+      return { rgb, blend };
+    };
+
+    let tokens = readCursorTokens();
+
+    const applyTheme = () => {
+      tokens = readCursorTokens();
+      const bgAlpha = tokens.blend === "normal" ? 1 : 0.85;
+      el.style.backgroundColor = `rgba(${tokens.rgb}, ${bgAlpha})`;
+      el.style.mixBlendMode = tokens.blend;
+    };
+    applyTheme();
+
+    const themeObserver = new MutationObserver((muts) => {
+      for (const m of muts) {
+        if (m.attributeName === "data-theme") {
+          applyTheme();
+          break;
+        }
+      }
+    });
+    themeObserver.observe(document.documentElement, { attributes: true });
+
     let mouseX = 0, mouseY = 0;
     let curX = 0, curY = 0;
     let hovering = false;
@@ -57,7 +88,7 @@ export default function CustomCursor() {
       el.style.opacity = `${glowOpacity}`;
 
       const glowIntensity = hovering ? 1.6 : 1;
-      el.style.boxShadow = `0 0 ${12 * glowIntensity}px rgba(100,150,255,${0.25 * glowIntensity}), 0 0 ${24 * glowIntensity}px rgba(100,150,255,${0.15 * glowIntensity})`;
+      el.style.boxShadow = `0 0 ${12 * glowIntensity}px rgba(${tokens.rgb}, ${0.25 * glowIntensity}), 0 0 ${24 * glowIntensity}px rgba(${tokens.rgb}, ${0.15 * glowIntensity})`;
 
       raf = requestAnimationFrame(tick);
     };
@@ -76,6 +107,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseup", onUp);
       document.removeEventListener("mouseenter", onEnter);
       document.removeEventListener("mouseleave", onLeave);
+      themeObserver.disconnect();
       clearTimeout(idleTimer);
       cancelAnimationFrame(raf);
     };
@@ -84,14 +116,12 @@ export default function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className="hero-cursor fixed top-0 left-0 z-[9998] pointer-events-none"
+      className="hero-cursor fixed top-0 left-0 z-9998 pointer-events-none"
       style={{
         width: 8,
         height: 8,
         borderRadius: "50%",
         backgroundColor: "rgba(140,170,255,0.85)",
-        boxShadow:
-          "0 0 12px rgba(100,150,255,0.25), 0 0 24px rgba(100,150,255,0.15)",
         opacity: 0,
         mixBlendMode: "screen",
         willChange: "transform",

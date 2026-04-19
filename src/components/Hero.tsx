@@ -187,7 +187,7 @@ export default function Hero() {
             letterSpacing: "-0.06em",
             lineHeight: 0.85,
             color: "transparent",
-            WebkitTextStroke: "1px rgba(255,255,255,0.03)",
+            WebkitTextStroke: "1px rgba(var(--fg-rgb),0.03)",
             textTransform: "uppercase",
             willChange: "transform",
           }}
@@ -215,13 +215,13 @@ export default function Hero() {
         {/* Single horizontal structural line */}
         <div className="absolute left-0 right-0 top-[43%] hero-fade-in" style={{ animationDelay: "calc(0.8s + var(--preloader-offset))" }}>
           <div className="h-px w-full" style={{
-            background: "linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 75%, transparent 95%)",
+            background: "linear-gradient(90deg, transparent 5%, rgba(var(--fg-rgb),0.05) 25%, rgba(var(--fg-rgb),0.08) 50%, rgba(var(--fg-rgb),0.05) 75%, transparent 95%)",
           }} />
         </div>
 
         {/* Vignette */}
         <div className="absolute inset-0" style={{
-          background: "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(5,5,8,0.55) 100%)",
+          background: "radial-gradient(ellipse 75% 70% at 50% 50%, transparent 20%, rgba(var(--bg-rgb),0.55) 100%)",
         }} />
       </div>
 
@@ -243,7 +243,7 @@ export default function Hero() {
           <div className="hero-slide-in" style={{ animationDelay: "calc(0.1s + var(--preloader-offset))" }}>
             <h1
               ref={firstNameRef}
-              className="text-[clamp(2.5rem,9vw,10rem)] font-extrabold leading-[0.85] tracking-[-0.06em] text-white uppercase"
+              className="text-[clamp(2.5rem,9vw,10rem)] font-extrabold leading-[0.85] tracking-[-0.06em] text-fg uppercase"
               style={{
                 fontFamily: "var(--font-display)",
                 willChange: "transform, text-shadow, filter",
@@ -267,7 +267,7 @@ export default function Hero() {
                 willChange: "transform, text-shadow, filter",
                 transition: "filter 0.3s ease",
                 color: "transparent",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.28) 100%)",
+                background: "linear-gradient(180deg, rgba(var(--fg-rgb),0.52) 0%, rgba(var(--fg-rgb),0.28) 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
               }}
@@ -278,7 +278,7 @@ export default function Hero() {
 
           {/* Descriptor */}
           <p
-            className="mt-7 text-[15px] md:text-[17px] text-white/55 leading-relaxed hero-fade-in"
+            className="mt-7 text-[15px] md:text-[17px] text-fg/55 leading-relaxed hero-fade-in"
             style={{ animationDelay: "calc(0.45s + var(--preloader-offset))", letterSpacing: "0.01em" }}
           >
             Cybersecurity student & builder based in Brisbane.
@@ -291,24 +291,24 @@ export default function Hero() {
             <a
               href="#projects"
               onClick={(e) => { e.preventDefault(); scrollTo("#projects"); }}
-              className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-white/12 hover:border-white/25 bg-white/3 hover:bg-white/7 cursor-none"
+              className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-fg/12 hover:border-fg/25 bg-fg/3 hover:bg-fg/7 cursor-none"
               style={{
                 transition: "box-shadow 0.4s ease, background 0.4s ease, border-color 0.4s ease",
               }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px 3px rgba(37,99,235,0.15), 0 0 48px 6px rgba(37,99,235,0.08)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
             >
-              <span className="text-[13px] font-medium tracking-wide text-white/65 group-hover:text-white/95 transition-colors duration-300">
+              <span className="text-[13px] font-medium tracking-wide text-fg/65 group-hover:text-fg/95 transition-colors duration-300">
                 View work
               </span>
-              <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-white/80 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-3.5 h-3.5 text-fg/30 group-hover:text-fg/80 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
             </a>
             <button
               ref={resumeBtnRef}
               onClick={openToast}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/8 hover:border-white/20 bg-white/2 hover:bg-white/5 cursor-none"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-fg/8 hover:border-fg/20 bg-fg/2 hover:bg-fg/5 cursor-none"
               style={{
                 transition: "box-shadow 0.4s ease, background 0.4s ease, border-color 0.4s ease, transform 0.15s ease",
               }}
@@ -317,10 +317,10 @@ export default function Hero() {
               onMouseDown={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(0.97)"; }}
               onMouseUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ""; }}
             >
-              <span className="text-[13px] tracking-wide text-white/50 group-hover:text-white/85 transition-colors duration-300">
+              <span className="text-[13px] tracking-wide text-fg/50 group-hover:text-fg/85 transition-colors duration-300">
                 Resume
               </span>
-              <svg className="w-3 h-3 text-white/25 group-hover:text-white/60 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-3 h-3 text-fg/25 group-hover:text-fg/60 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
               </svg>
             </button>
@@ -334,7 +334,7 @@ export default function Hero() {
             <div
               className={`absolute inset-0 ${toastState === "dismissing" ? "resume-toast-exit" : "resume-toast-enter"}`}
               style={{
-                background: "radial-gradient(ellipse 40% 35% at 50% 55%, rgba(0,0,0,0.15) 0%, transparent 100%)",
+                background: "radial-gradient(ellipse 40% 35% at 50% 55%, rgba(var(--shadow-rgb),0.15) 0%, transparent 100%)",
                 pointerEvents: "none",
               }}
             />
@@ -343,20 +343,20 @@ export default function Hero() {
               className={`pointer-events-auto px-6 py-4 rounded-xl border backdrop-blur-[8px] ${toastState === "dismissing" ? "resume-toast-exit" : "resume-toast-enter"}`}
               style={{
                 maxWidth: 300,
-                background: "rgba(255,255,255,0.065)",
-                borderColor: "rgba(255,255,255,0.10)",
-                boxShadow: "0 8px 40px rgba(0,0,0,0.45), 0 0 1px rgba(255,255,255,0.08)",
+                background: "rgba(var(--fg-rgb),0.065)",
+                borderColor: "rgba(var(--fg-rgb),0.10)",
+                boxShadow: "0 8px 40px rgba(var(--shadow-rgb),0.45), 0 0 1px rgba(var(--fg-rgb),0.08)",
               }}
             >
               <div className="flex items-start gap-3">
-                <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-white/75" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-fg/75" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <div>
-                  <p className="text-[15px] font-medium text-white/95 mb-2" style={{ fontFamily: "var(--font-display)" }}>
+                  <p className="text-[15px] font-medium text-fg/95 mb-2" style={{ fontFamily: "var(--font-display)" }}>
                     Resume coming soon
                   </p>
-                  <p className="text-[12px] text-white/50 leading-relaxed">
+                  <p className="text-[12px] text-fg/50 leading-relaxed">
                     Still refining the details — check back shortly.
                   </p>
                 </div>
@@ -368,8 +368,8 @@ export default function Hero() {
         {/* Bottom bar — pinned to bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-6 md:px-10 pb-6 md:pb-8 flex items-end justify-between hero-fade-in" style={{ animationDelay: "calc(1s + var(--preloader-offset))" }}>
           <NowPlaying />
-          <p className="text-[10px] font-mono text-white/12 tracking-wider">
-            {buildingText}<span className="text-white/20">.</span>
+          <p className="text-[10px] font-mono text-fg/12 tracking-wider">
+            {buildingText}<span className="text-fg/20">.</span>
           </p>
         </div>
       </div>
