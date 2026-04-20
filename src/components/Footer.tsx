@@ -7,6 +7,7 @@ const LINKS = [
   { label: "GitHub", href: "https://github.com/jaineeldev" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/jaineel-khatri/" },
   { label: "Email", href: "mailto:jaineelk.dev@gmail.com" },
+  { label: "Ko-fi", href: "https://ko-fi.com/jaineeldev" },
 ];
 
 export default function Footer() {

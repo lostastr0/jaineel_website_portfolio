@@ -17,6 +17,7 @@ const EMAIL = "jaineelk.dev@gmail.com";
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/jaineeldev" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/jaineel-khatri/" },
+  { label: "Ko-fi", href: "https://ko-fi.com/jaineeldev" },
 ];
 
 /* ── CTA container with cursor-reactive glow + ambient float ── */
