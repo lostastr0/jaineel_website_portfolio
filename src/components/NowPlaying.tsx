@@ -1,94 +1,71 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-interface SpotifyData {
-  isPlaying: boolean;
-  title?: string;
-  artist?: string;
-  albumArt?: string;
-  songUrl?: string;
-}
+const EASE = [0.16, 1, 0.3, 1] as const;
+const POLL_MS = 30_000;
+
+type Track = { isPlaying: true; title: string; artist: string };
+type Idle = { isPlaying: false };
+type State = Track | Idle | null;
 
 export default function NowPlaying() {
-  const [data, setData] = useState<SpotifyData>({ isPlaying: false });
+  const [state, setState] = useState<State>(null);
 
   useEffect(() => {
-    const fetchNowPlaying = async () => {
-      try {
-        const res = await fetch("/api/spotify");
-        const json = await res.json();
-        setData(json);
-      } catch {
-        setData({ isPlaying: false });
-      }
-    };
+    let cancelled = false;
 
-    fetchNowPlaying();
-    const interval = setInterval(fetchNowPlaying, 30_000);
-    return () => clearInterval(interval);
+    async function load() {
+      try {
+        const res = await fetch("/api/spotify/now-playing", {
+          cache: "no-store",
+        });
+        if (!res.ok) {
+          if (!cancelled) setState({ isPlaying: false });
+          return;
+        }
+        const data = (await res.json()) as State;
+        if (!cancelled) setState(data);
+      } catch {
+        if (!cancelled) setState({ isPlaying: false });
+      }
+    }
+
+    load();
+    const id = window.setInterval(load, POLL_MS);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
   }, []);
 
-  const Wrapper = data.songUrl ? "a" : "div";
-  const wrapperProps = data.songUrl
-    ? { href: data.songUrl, target: "_blank" as const, rel: "noopener noreferrer" }
-    : {};
+  const playing = state && state.isPlaying ? state : null;
 
   return (
-    <Wrapper
-      {...wrapperProps}
-      className="group relative inline-flex items-center gap-3 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-fg/3"
-      style={{
-        cursor: data.songUrl ? "pointer" : "default",
-        background: "linear-gradient(to right, transparent, rgba(var(--fg-rgb),0.05), transparent)",
-        borderBottom: "1px solid rgba(var(--fg-rgb),0.04)",
-      }}
-    >
-      {/* Album art or equalizer */}
-      {data.isPlaying && data.albumArt ? (
-        <div className="relative shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={data.albumArt}
-            alt=""
-            className="w-9 h-9 rounded group-hover:opacity-90 transition-opacity duration-300"
-            style={{
-              opacity: 0.75,
-              filter: "brightness(1.15)",
-              boxShadow: "0 4px 12px rgba(var(--shadow-rgb),0.4)",
-            }}
+    <AnimatePresence>
+      {playing && (
+        <motion.div
+          key={`${playing.title}-${playing.artist}`}
+          initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="inline-flex max-w-full items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.22em]"
+        >
+          <span
+            aria-hidden
+            className="status-dot inline-block h-1.5 w-1.5 rounded-full bg-accent"
           />
-          <span className="absolute bottom-0.5 right-0.5 flex items-end gap-px h-3.5">
-            <span className="spotify-bar w-0.75 rounded-full" style={{ animationDelay: "0s" }} />
-            <span className="spotify-bar w-0.75 rounded-full" style={{ animationDelay: "0.15s" }} />
-            <span className="spotify-bar w-0.75 rounded-full" style={{ animationDelay: "0.3s" }} />
+          <span className="text-fg-dim">Now playing</span>
+          <span className="text-fg-faint" aria-hidden>·</span>
+          <span className="truncate text-fg-muted normal-case tracking-normal">
+            <span className="text-fg">{playing.title}</span>
+            <span className="mx-2 text-fg-faint" aria-hidden>—</span>
+            <span>{playing.artist}</span>
           </span>
-        </div>
-      ) : (
-        <span className="flex items-end gap-0.5 h-3 shrink-0 opacity-30">
-          <span className="w-0.5 h-1.5 bg-fg/40 rounded-full" />
-          <span className="w-0.5 h-2.5 bg-fg/40 rounded-full" />
-          <span className="w-0.5 h-1 bg-fg/40 rounded-full" />
-        </span>
+        </motion.div>
       )}
-
-      {/* Text */}
-      <div className="flex flex-col min-w-0">
-        {data.isPlaying && data.title ? (
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[12px] text-fg/75 group-hover:text-fg/90 transition-colors duration-300 truncate max-w-48 leading-tight font-medium">
-              {data.title}
-            </span>
-            <span className="text-[10px] text-fg/40 truncate max-w-48 leading-tight">
-              {data.artist}
-            </span>
-          </div>
-        ) : (
-          <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-fg/30 leading-tight">
-            Offline
-          </span>
-        )}
-      </div>
-    </Wrapper>
+    </AnimatePresence>
   );
 }

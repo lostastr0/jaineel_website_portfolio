@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Logo from "@/components/Logo";
 
 export default function Error({
   error,
@@ -15,69 +14,57 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-bg flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Ambient glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{
-          width: "60vmax",
-          height: "60vmax",
-          background:
-            "radial-gradient(ellipse at center, rgba(239,68,68,0.05) 0%, transparent 60%)",
-          filter: "blur(80px)",
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center max-w-md">
-        <div className="text-fg/60 mb-10">
-          <Logo size={24} />
+    <main className="relative flex min-h-svh flex-col bg-bg px-6 sm:px-10 md:px-14">
+      <header className="flex items-start justify-between pt-6 sm:pt-8 md:pt-10">
+        <div className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-fg">
+          JK.
         </div>
-
-        <p className="text-[11px] font-mono tracking-[0.3em] uppercase text-fg/30 mb-4">
-          Runtime · Exception
-        </p>
-
-        <h1
-          className="text-[clamp(3rem,12vw,6rem)] font-bold tracking-[-0.05em] text-fg/95 leading-none"
-          style={{ fontFamily: "var(--font-display)" }}
+        <a
+          href="/"
+          className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted transition-colors duration-300 hover:text-accent"
         >
-          Something broke.
-        </h1>
+          Home
+        </a>
+      </header>
 
-        <p className="mt-6 text-[14px] text-fg/40 leading-relaxed max-w-sm">
-          Unexpected error on this page. You can try again, or head home and
-          take a different path.
-        </p>
+      <div className="flex flex-1 items-center">
+        <div className="w-full max-w-[1400px]">
+          <h1
+            className="font-display font-bold leading-[0.95] tracking-[-0.04em] text-fg"
+            style={{ fontSize: "clamp(3rem, 10vw, 8rem)" }}
+          >
+            Something broke.
+          </h1>
 
-        {error.digest && (
-          <p className="mt-4 text-[10px] font-mono tracking-[0.12em] text-fg/25">
-            ref: {error.digest}
+          <p className="mt-8 max-w-[42ch] text-[15.5px] leading-[1.55] text-fg-muted sm:mt-10 sm:text-[17px] sm:leading-[1.5]">
+            Unexpected error on this page. Try again, or head home and take a different path.
           </p>
-        )}
 
-        <div className="mt-10 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={reset}
-            className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-fg/10 hover:border-fg/25 bg-fg/3 hover:bg-fg/6 transition-all duration-300"
-          >
-            <span className="text-[12px] tracking-[0.14em] uppercase text-fg/70 group-hover:text-fg/95 transition-colors">
+          {error.digest && (
+            <p className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.22em] text-fg-dim">
+              ref: {error.digest}
+            </p>
+          )}
+
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.22em]">
+            <button
+              type="button"
+              onClick={reset}
+              className="text-fg-muted transition-colors duration-300 hover:text-accent"
+            >
               Try again
-            </span>
-          </button>
-          <a
-            href="/"
-            className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-transparent hover:border-fg/10 transition-all duration-300"
-          >
-            <span className="text-[12px] tracking-[0.14em] uppercase text-fg/45 group-hover:text-fg/80 transition-colors">
-              Return home
-            </span>
-            <span className="text-fg/30 group-hover:text-fg/70 transition-all duration-300 group-hover:translate-x-0.5">
-              →
-            </span>
-          </a>
+            </button>
+            <a
+              href="/"
+              className="text-fg-muted transition-colors duration-300 hover:text-accent"
+            >
+              Return home →
+            </a>
+          </div>
         </div>
       </div>
+
+      <div className="pb-6 sm:pb-8 md:pb-10" />
     </main>
   );
 }

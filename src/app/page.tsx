@@ -1,25 +1,19 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Skills from "@/components/Skills";
-import Projects from "@/components/Projects";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import Preloader from "@/components/Preloader";
+import Hero from "@/components/sections/Hero";
+import Work from "@/components/sections/Work";
+import Stack from "@/components/sections/Stack";
+import About from "@/components/sections/About";
+import Contact from "@/components/sections/Contact";
+import StickyNav from "@/components/StickyNav";
 
 export default function Home() {
   return (
-    <>
-      <Preloader />
-      <Navbar />
-      <main>
-        <Hero />
-        <Projects />
-        <Skills />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <main className="relative bg-bg">
+      <StickyNav />
+      <Hero />
+      <Work />
+      <Stack />
+      <About />
+      <Contact />
+    </main>
   );
 }

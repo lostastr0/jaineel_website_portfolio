@@ -1,0 +1,71 @@
+import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
+const NOW_PLAYING_ENDPOINT =
+  "https://api.spotify.com/v1/me/player/currently-playing";
+
+type TokenResponse = { access_token?: string };
+type Artist = { name: string };
+type Track = { name: string; artists: Artist[] };
+type NowPlayingResponse = { is_playing?: boolean; item?: Track | null };
+
+async function getAccessToken(): Promise<string | null> {
+  const id = process.env.SPOTIFY_CLIENT_ID;
+  const secret = process.env.SPOTIFY_CLIENT_SECRET;
+  const refresh = process.env.SPOTIFY_REFRESH_TOKEN;
+  if (!id || !secret || !refresh) return null;
+
+  const basic = Buffer.from(`${id}:${secret}`).toString("base64");
+  const res = await fetch(TOKEN_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${basic}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refresh,
+    }),
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+  const data = (await res.json()) as TokenResponse;
+  return data.access_token ?? null;
+}
+
+export async function GET() {
+  const token = await getAccessToken();
+  if (!token) {
+    return NextResponse.json({ isPlaying: false }, { status: 200 });
+  }
+
+  const res = await fetch(NOW_PLAYING_ENDPOINT, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+
+  if (res.status === 204 || res.status > 400) {
+    return NextResponse.json({ isPlaying: false }, { status: 200 });
+  }
+
+  const data = (await res.json()) as NowPlayingResponse;
+  const item = data.item;
+  if (!data.is_playing || !item) {
+    return NextResponse.json({ isPlaying: false }, { status: 200 });
+  }
+
+  return NextResponse.json(
+    {
+      isPlaying: true,
+      title: item.name,
+      artist: item.artists.map((a) => a.name).join(", "),
+    },
+    {
+      status: 200,
+      headers: { "Cache-Control": "no-store, max-age=0" },
+    },
+  );
+}

@@ -1,169 +1,107 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-type Phase = "running" | "releasing" | "done";
+const EASE = [0.16, 1, 0.3, 1] as const;
+const PROGRESS_DURATION_S = 1.2;
+const FADE_OUT_S = 0.45;
+const SESSION_KEY = "jk_preloader_seen";
 
-/* ── Timing ──
- * 0 → COUNT_MS:               counter animates 0 → 100
- * COUNT_MS → COUNT_MS + HOLD: brief hold at 100%
- * + FADE_MS:                  overlay fades, hero takes over
- */
-const COUNT_MS = 1250;
-const HOLD_MS = 150;
-const FADE_MS = 400;
-const RELEASE_AT = COUNT_MS + HOLD_MS;
-const DONE_AT = RELEASE_AT + FADE_MS;
+export const PRELOADER_DONE_EVENT = "preloader:done";
+
+let preloaderDoneFlag = false;
+export function isPreloaderDone(): boolean {
+  return preloaderDoneFlag;
+}
+
+function notifyDone() {
+  if (preloaderDoneFlag) return;
+  preloaderDoneFlag = true;
+  window.dispatchEvent(new CustomEvent(PRELOADER_DONE_EVENT));
+}
+
+function checkShouldSkip(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    if (sessionStorage.getItem(SESSION_KEY) === "1") return true;
+  } catch {
+    /* sessionStorage unavailable */
+  }
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return true;
+  return false;
+}
 
 export default function Preloader() {
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<Phase>("running");
+  const [show, setShow] = useState(true);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.add("preloader-active");
+    if (checkShouldSkip()) {
+      setShow(false);
+      notifyDone();
+      return;
+    }
 
-    let raf = 0;
-    const start = performance.now();
+    document.documentElement.style.overflow = "hidden";
 
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      const t = Math.min(elapsed / COUNT_MS, 1);
-      const eased = 1 - Math.pow(1 - t, 2.4);
-      setProgress(eased);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-
-    const t1 = setTimeout(() => setPhase("releasing"), RELEASE_AT);
-    const t2 = setTimeout(() => setPhase("done"), DONE_AT);
+    const timer = window.setTimeout(() => {
+      try {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {
+        /* sessionStorage unavailable */
+      }
+      setDone(true);
+      notifyDone();
+    }, PROGRESS_DURATION_S * 1000);
 
     return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
+      window.clearTimeout(timer);
+      document.documentElement.style.overflow = "";
     };
   }, []);
 
-  if (phase === "done") return null;
+  useEffect(() => {
+    if (!done) return;
+    const unlock = window.setTimeout(() => {
+      document.documentElement.style.overflow = "";
+    }, FADE_OUT_S * 1000);
+    return () => window.clearTimeout(unlock);
+  }, [done]);
 
-  const pct = Math.min(100, Math.round(progress * 100));
-  const padded = String(pct).padStart(3, "0");
+  if (!show) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-9999 flex items-center justify-center bg-bg"
-      style={{
-        opacity: phase === "releasing" ? 0 : 1,
-        transition:
-          phase === "releasing"
-            ? "opacity 500ms cubic-bezier(0.16, 1, 0.3, 1)"
-            : "none",
-        pointerEvents: "none",
-      }}
-    >
-      {/* Ambient glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: "32vw",
-          height: "32vh",
-          background:
-            "radial-gradient(ellipse at center, rgba(37,99,235,0.06) 0%, transparent 65%)",
-          filter: "blur(70px)",
-        }}
-      />
-
-      <div className="relative flex flex-col items-center gap-7">
-        {/* System label */}
-        <div
-          className="flex items-center gap-2.5 opacity-0 preloader-line"
-          style={{ animationDelay: "80ms", fontFamily: "var(--font-mono)" }}
+    <AnimatePresence>
+      {!done && (
+        <motion.div
+          key="preloader"
+          aria-hidden
+          className="jk-preloader-root fixed inset-0 z-[100] flex items-center justify-center bg-bg"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: FADE_OUT_S, ease: EASE }}
         >
-          <span
-            className="inline-block w-1 h-1 rounded-full bg-emerald-400/70"
-            style={{
-              boxShadow: "0 0 6px rgba(52,211,153,0.4)",
-              animation: "preloader-dot-pulse 1.8s ease-in-out infinite",
-            }}
-          />
-          <span className="text-[9px] tracking-[0.32em] uppercase text-fg/25 select-none">
-            jk.system &middot; calibrating
-          </span>
-        </div>
+          <div className="flex flex-col items-center gap-6 sm:gap-7">
+            <span
+              className="font-mono text-[64px] font-medium uppercase tracking-[-0.01em] text-fg"
+              style={{ lineHeight: 1 }}
+            >
+              JK.
+            </span>
 
-        {/* Counter */}
-        <div
-          className="flex items-baseline gap-1 tabular-nums select-none opacity-0 preloader-line"
-          style={{ animationDelay: "180ms", fontFamily: "var(--font-mono)" }}
-        >
-          <span
-            className="text-[clamp(4rem,9vw,7rem)] font-medium leading-none tracking-[-0.04em]"
-            style={{
-              color: "rgba(var(--fg-rgb),0.92)",
-              textShadow: "0 0 40px rgba(37,99,235,0.12)",
-            }}
-          >
-            {padded}
-          </span>
-          <span className="text-[clamp(1rem,1.8vw,1.4rem)] text-fg/30 leading-none font-medium">
-            %
-          </span>
-        </div>
-
-        {/* Progress bar */}
-        <div
-          className="relative overflow-hidden opacity-0 preloader-line"
-          style={{
-            width: "min(320px, 64vw)",
-            height: 1,
-            animationDelay: "260ms",
-          }}
-        >
-          <div className="absolute inset-0 bg-fg/8" />
-          <div
-            className="absolute left-0 top-0 bottom-0"
-            style={{
-              width: `${progress * 100}%`,
-              background:
-                "linear-gradient(90deg, rgba(var(--fg-rgb),0.2) 0%, rgba(37,99,235,0.7) 50%, rgba(var(--fg-rgb),0.4) 100%)",
-              boxShadow: "0 0 6px rgba(37,99,235,0.35)",
-              transition: "width 70ms linear",
-            }}
-          />
-          <div
-            className="absolute top-1/2 -translate-y-1/2"
-            style={{
-              left: `calc(${progress * 100}% - 2px)`,
-              width: 4,
-              height: 4,
-              borderRadius: "50%",
-              background: "rgba(37,99,235,0.9)",
-              boxShadow:
-                "0 0 10px rgba(37,99,235,0.8), 0 0 20px rgba(37,99,235,0.3)",
-              opacity: progress < 1 ? 1 : 0,
-              transition: "opacity 300ms ease",
-            }}
-          />
-        </div>
-
-        {/* Status — swaps at completion */}
-        <div
-          className="h-3 flex items-center opacity-0 preloader-line"
-          style={{ animationDelay: "340ms", fontFamily: "var(--font-mono)" }}
-        >
-          <span
-            className="text-[9px] tracking-[0.32em] uppercase select-none transition-colors duration-500"
-            style={{
-              color:
-                progress < 1
-                  ? "rgba(var(--fg-rgb),0.20)"
-                  : "rgba(52,211,153,0.75)",
-            }}
-          >
-            {progress < 1 ? "loading assets" : "ready"}
-          </span>
-        </div>
-      </div>
-    </div>
+            <div className="relative h-px w-[300px] overflow-hidden bg-fg-faint">
+              <motion.div
+                className="absolute inset-y-0 left-0 right-0 bg-fg"
+                style={{ transformOrigin: "left center" }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: PROGRESS_DURATION_S, ease: EASE }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
