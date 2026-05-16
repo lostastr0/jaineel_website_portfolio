@@ -94,7 +94,7 @@ export default function Stack() {
   return (
     <section
       id="stack"
-      className="relative bg-bg px-6 pt-16 pb-16 sm:px-10 sm:pt-20 md:px-14 md:pt-28"
+      className="relative bg-bg px-7 pt-16 pb-16 sm:px-10 sm:pt-20 md:px-14 md:pt-28"
     >
       <div className="mx-auto w-full max-w-[1400px]">
         <motion.header

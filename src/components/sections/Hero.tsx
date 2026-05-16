@@ -128,7 +128,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: -6, filter: "blur(4px)" }}
           animate={ready ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: -6, filter: "blur(4px)" }}
           transition={{ duration: 0.7, ease: EASE, delay: ready ? T.topBar : 0 }}
-          className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 pt-6 sm:px-10 sm:pt-8 md:px-14 md:pt-10"
+          className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-7 pt-6 sm:px-10 sm:pt-8 md:px-14 md:pt-10"
         >
           <a
             href="#home"
@@ -158,7 +158,7 @@ export default function Hero() {
         </motion.header>
 
         {/* ─── Main composition ─── */}
-        <div className="flex flex-1 items-center px-6 py-24 sm:px-10 sm:py-28 md:px-14 md:py-32">
+        <div className="flex flex-1 items-center px-7 py-24 sm:px-10 sm:py-28 md:px-14 md:py-32">
           <div className="w-full max-w-[1500px]">
             <h1
               className="font-display font-extrabold leading-[0.9] tracking-[-0.045em] text-fg"
@@ -173,8 +173,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
               animate={ready ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 12, filter: "blur(4px)" }}
               transition={{ duration: 0.9, ease: EASE, delay: ready ? T.line2 : 0 }}
-              className="mt-5 max-w-[34ch] font-display font-medium leading-[1.18] tracking-[-0.018em] text-fg-muted sm:mt-7"
-              style={{ fontSize: "clamp(1.25rem, 2.6vw, 2rem)" }}
+              className="mt-5 max-w-[42ch] font-display font-medium leading-[1.18] tracking-[-0.018em] text-fg-muted text-[1rem] sm:mt-7 sm:max-w-[34ch] sm:text-[clamp(1.25rem,2.6vw,2rem)]"
             >
               {HEADLINE_2}
             </motion.p>
@@ -208,7 +207,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={ready ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, ease: EASE, delay: ready ? T.nowPlaying : 0 }}
-          className="pointer-events-none absolute inset-x-0 bottom-0 px-6 pb-6 sm:px-10 sm:pb-8 md:px-14 md:pb-10"
+          className="pointer-events-none absolute inset-x-0 bottom-0 px-7 pb-6 sm:px-10 sm:pb-8 md:px-14 md:pb-10"
         >
           <NowPlaying />
         </motion.div>

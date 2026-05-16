@@ -61,7 +61,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative bg-bg px-6 pt-16 pb-10 sm:px-10 sm:pt-20 sm:pb-12 md:px-14 md:pt-28 md:pb-14"
+      className="relative bg-bg px-7 pt-16 pb-10 sm:px-10 sm:pt-20 sm:pb-12 md:px-14 md:pt-28 md:pb-14"
     >
       <div className="mx-auto w-full max-w-[1400px]">
         <motion.h2
@@ -70,7 +70,7 @@ export default function Contact() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.9, ease: EASE, delay: 0.05 }}
           className="font-display font-extrabold leading-[0.98] tracking-[-0.05em] text-fg"
-          style={{ fontSize: "clamp(1.625rem, 5vw, 5.25rem)" }}
+          style={{ fontSize: "clamp(1.5rem, 5vw, 5.25rem)" }}
         >
           Open to junior security and fullstack roles. Reach out.
         </motion.h2>

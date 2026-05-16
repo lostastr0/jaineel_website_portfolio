@@ -37,7 +37,7 @@ export default function StickyNav() {
           transition={{ duration: 0.5, ease: EASE }}
           className="fixed inset-x-0 top-0 z-50 border-b border-border bg-bg"
         >
-          <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between px-6 py-4 sm:px-10 sm:py-5 md:px-14">
+          <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between px-7 py-4 sm:px-10 sm:py-5 md:px-14">
             <a
               href="#home"
               className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-fg transition-colors duration-300 hover:text-accent"

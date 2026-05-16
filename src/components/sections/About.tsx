@@ -77,7 +77,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative bg-bg px-6 py-16 sm:px-10 sm:py-20 md:px-14 md:py-28"
+      className="relative bg-bg px-7 py-16 sm:px-10 sm:py-20 md:px-14 md:py-28"
     >
       <div className="mx-auto w-full max-w-[1400px]">
         <motion.h2

@@ -120,7 +120,7 @@ function ProjectRow({ project, i }: { project: Project; i: number }) {
         href={project.href}
         target={project.external ? "_blank" : undefined}
         rel={project.external ? "noopener noreferrer" : undefined}
-        className="group relative grid grid-cols-[2.25rem_4.25rem_1fr_auto] items-start gap-x-5 px-1 py-5 transition-colors duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-accent before:opacity-0 before:transition-opacity before:duration-[250ms] before:ease-[cubic-bezier(0.16,1,0.3,1)] before:content-[''] hover:before:opacity-100 sm:grid-cols-[2.75rem_5rem_1fr_auto] sm:gap-x-8 sm:py-6 md:grid-cols-[3rem_5.5rem_1fr_auto] md:py-7"
+        className="group relative grid grid-cols-[1.75rem_4.25rem_1fr] items-start gap-x-3 px-1 py-5 transition-colors duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-accent before:opacity-0 before:transition-opacity before:duration-[250ms] before:ease-[cubic-bezier(0.16,1,0.3,1)] before:content-[''] hover:before:opacity-100 sm:grid-cols-[2.75rem_5rem_1fr_auto] sm:gap-x-8 sm:py-6 md:grid-cols-[3rem_5.5rem_1fr_auto] md:py-7"
       >
         <span className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-fg-dim sm:pt-[0.4rem]">
           {project.index}
@@ -163,7 +163,7 @@ function ProjectRow({ project, i }: { project: Project; i: number }) {
           </div>
         </div>
 
-        <ArrowUpRight className="text-fg-dim transition-colors duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent sm:mt-[0.45rem]" />
+        <ArrowUpRight className="hidden text-fg-dim transition-colors duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent sm:mt-[0.45rem] sm:block" />
       </a>
     </motion.li>
   );
@@ -173,7 +173,7 @@ export default function Work() {
   return (
     <section
       id="work"
-      className="relative bg-bg px-6 pt-10 pb-16 sm:px-10 sm:pt-12 sm:pb-20 md:px-14 md:pt-14 md:pb-28"
+      className="relative bg-bg px-7 pt-10 pb-16 sm:px-10 sm:pt-12 sm:pb-20 md:px-14 md:pt-14 md:pb-28"
     >
       <div className="mx-auto w-full max-w-[1500px]">
         <motion.header

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-svh flex-col bg-bg px-6 sm:px-10 md:px-14">
+    <main className="relative flex min-h-svh flex-col bg-bg px-7 sm:px-10 md:px-14">
       <header className="flex items-start justify-between pt-6 sm:pt-8 md:pt-10">
         <div className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-fg">
           JK.
