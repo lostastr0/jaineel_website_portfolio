@@ -1,0 +1,21 @@
+# Cloudflare Workers config for the jaineel.dev portfolio.
+#
+# This file is consumed by `wrangler deploy` and by the @opennextjs/cloudflare
+# adapter. `main` and `assets.directory` both point into .open-next/, which is
+# the output of `opennextjs-cloudflare build`.
+#
+# Cloudflare Pages projects now sit on top of Workers — this single config
+# covers both. Bindings (KV, R2, D1) can be added below as the site grows.
+
+name = "jaineel-dev"
+main = ".open-next/worker.js"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Environment variables and secrets are NOT defined here — they belong in the
+# Cloudflare dashboard (or via `wrangler secret put`). See DEPLOYMENT.md for
+# the full list of vars this project needs.

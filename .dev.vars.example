@@ -1,0 +1,16 @@
+# Local Workers dev vars — copy to .dev.vars and fill in real values.
+# `.dev.vars` is gitignored; this file is the template that lives in source.
+#
+# These power the /api/spotify/now-playing route used by the NowPlaying
+# component. Generate them once against your own Spotify account and reuse:
+#
+#   1. Create an app at https://developer.spotify.com/dashboard
+#   2. Use the authorization-code flow with scope `user-read-currently-playing`
+#      to obtain the refresh token (one-time exchange).
+#
+# In production these go into the Cloudflare dashboard as Secrets (not Vars) —
+# see DEPLOYMENT.md.
+
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REFRESH_TOKEN=
