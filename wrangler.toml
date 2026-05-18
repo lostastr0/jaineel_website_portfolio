@@ -7,10 +7,11 @@
 # Cloudflare Pages projects now sit on top of Workers — this single config
 # covers both. Bindings (KV, R2, D1) can be added below as the site grows.
 
-name = "jaineel-dev"
+name = "jaineelportfolio"
 main = ".open-next/worker.js"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]
+workers_dev = false
 
 [assets]
 directory = ".open-next/assets"
