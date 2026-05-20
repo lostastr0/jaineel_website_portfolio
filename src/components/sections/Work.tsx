@@ -28,6 +28,16 @@ type Project = {
 const PROJECTS: Project[] = [
   {
     index: "01",
+    name: "Velo",
+    description: "Client workflow platform for freelance devs — proposal goes in, project and invoice come out automatically. Biggest build to date.",
+    status: "WIP",
+    year: "2026",
+    href: "https://project-velo.vercel.app/",
+    tech: ["Next.js", "TypeScript", "Postgres", "Clerk"],
+    external: true,
+  },
+  {
+    index: "02",
     name: "Hawthorne Corner Store",
     description: "Local convenience store site — menu, hours, and ordering for a real small business with real customers.",
     status: "Live",
@@ -37,7 +47,7 @@ const PROJECTS: Project[] = [
     external: true,
   },
   {
-    index: "02",
+    index: "03",
     name: "Portfolio v2",
     description: "This site. Next.js, Framer Motion, and a deliberate restraint problem.",
     status: "Live",
@@ -47,7 +57,7 @@ const PROJECTS: Project[] = [
     external: true,
   },
   {
-    index: "03",
+    index: "04",
     name: "NIDS-ML",
     description: "Network intrusion detection system, ML-augmented. Built with Nicholas Ng.",
     status: "WIP",
@@ -57,7 +67,7 @@ const PROJECTS: Project[] = [
     external: true,
   },
   {
-    index: "04",
+    index: "05",
     name: "System Fingerprint Tool",
     description: "Python GUI for security recon — host info plus multi-threaded port scanning, exports CSV.",
     status: "Complete",
@@ -67,23 +77,13 @@ const PROJECTS: Project[] = [
     external: true,
   },
   {
-    index: "05",
+    index: "06",
     name: "DesktopBuddy",
     description: "Electron desktop mascot with a live system-stat HUD. Personality bundled in.",
     status: "WIP",
     year: "2026",
     href: "https://github.com/jaineeldev/desktop_buddy",
     tech: ["Electron", "TypeScript", "React"],
-    external: true,
-  },
-  {
-    index: "06",
-    name: "Cybersecurity Assessments",
-    description: "TAFE coursework — vulnerability reports, threat modelling, control evaluations.",
-    status: "Active",
-    year: "2026",
-    href: "https://github.com/jaineeldev/cybersecurity-assessments",
-    tech: ["Threat modelling", "Reporting"],
     external: true,
   },
 ];
